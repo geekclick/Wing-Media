@@ -2,7 +2,6 @@ import { Navbar, NavbarContent, NavbarItem, Avatar } from "@nextui-org/react";
 import { RiUserSearchFill, RiUserSearchLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import NewPostModal from "../post/NewPostModal";
-import { PiPhoneCallFill, PiPhoneCallLight } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { StoreState } from "../../interfaces/storeInterface";
 import { TbPhoto, TbPhotoFilled } from "react-icons/tb";
