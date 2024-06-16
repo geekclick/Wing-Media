@@ -56,7 +56,7 @@ export default function BottomNav() {
           </NewPostModal>
           {/* </Link> */}
         </NavbarItem>
-        <NavbarItem>
+        {/* <NavbarItem>
           <Link
             color="foreground"
             to="/calls"
@@ -69,7 +69,7 @@ export default function BottomNav() {
             )}
             <p className="text-xs font-semibold  text-center">Calls</p>
           </Link>
-        </NavbarItem>
+        </NavbarItem> */}
         <NavbarItem isActive>
           <Link
             to="/profile"

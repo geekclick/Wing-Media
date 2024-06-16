@@ -14,15 +14,16 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { User } from "../interfaces/common";
 import { useUpdateProfileMutation } from "../store/api/api";
 import { useAsyncMutation } from "../hooks/hooks";
-import { sendImagetoCloud } from "../utils";
-import { v4 as uuid } from "uuid";
 import DesktopSidebar from "../components/shared/DesktopSidebar";
+import { useFileHandler } from "6pp";
+import { MdDeleteForever } from "react-icons/md";
+import AlertModal from "../components/profile/AlertModal";
 
 function EditProfile() {
   const navigate = useNavigate();
   const submitRef = useRef<HTMLButtonElement | null>(null);
   const imageRef = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState<File | null>(null);
+  const image = useFileHandler("single");
   const [loader, setLoader] = useState(false);
   const userData = useSelector((state: StoreState) => state.userSlice.user);
 
@@ -39,12 +40,13 @@ function EditProfile() {
 
   const OnSubmit: SubmitHandler<User> = async (data) => {
     setLoader(true);
-    if (image) {
-      const imgUrl = await sendImagetoCloud(image, "profile");
-      const newAvatar = { public_id: uuid(), url: imgUrl };
-      data = { ...data, avatar: newAvatar };
+    const formData = new FormData();
+    if (image.file) {
+      formData.append("single", image.file);
     }
-    await updateProfile("Updating", data);
+    formData.append("data", JSON.stringify(data));
+
+    await updateProfile("Updating", { data: formData });
     reset();
     setLoader(false);
     navigate("/profile");
@@ -81,9 +83,7 @@ function EditProfile() {
               </p>
             }
             avatarProps={{
-              src: `${
-                image ? URL.createObjectURL(image) : userData.avatar?.url
-              }`,
+              src: `${image.preview ? image.preview : userData.avatar?.url}`,
             }}
             classNames={{
               name: "font-bold text-base",
@@ -92,7 +92,7 @@ function EditProfile() {
           />
         </div>
         <form onSubmit={handleSubmit(OnSubmit)}>
-          <div className="p-4 flex flex-col space-y-12">
+          <div className="p-4 flex flex-col space-y-14">
             <Input
               label="Username"
               labelPlacement="outside"
@@ -124,16 +124,18 @@ function EditProfile() {
             <input
               type="file"
               ref={imageRef}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                if (e.target.files && e.target.files.length > 0) {
-                  setImage(e.target.files[0]);
-                }
-              }}
+              onChange={image.changeHandler}
               className="hidden"
             />
             <button type="submit" className="hidden" ref={submitRef}></button>
           </div>
         </form>
+        <AlertModal>
+          <button className="flex w-fit m-auto my-4 p-3 font-semibold text-white rounded-lg bg-red-500">
+            <MdDeleteForever className="text-2xl" />
+            <span>Delete Account Permanently</span>
+          </button>
+        </AlertModal>
       </div>
     </>
   );

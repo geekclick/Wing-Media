@@ -51,8 +51,6 @@ function OtherUserProfile() {
       });
       setBtnState(true);
     } else {
-      console.log(me._id);
-      console.log(userId);
       socket?.emit(UNFOLLOW_USER, { userA: me._id, userB: userId });
       setBtnState(false);
     }

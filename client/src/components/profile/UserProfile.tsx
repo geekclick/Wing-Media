@@ -83,13 +83,13 @@ function UserProfile({ user, posts, isLoading }: UserProfileProps) {
           <h1 className="font-bold">{user?.posts?.length}</h1>
           <p>posts</p>
         </div>
-        <Link to={`/profile/followers/${user._id}`}>
+        <Link to={`/profile/followers/${user?._id}`}>
           <div className="text-center">
             <h1 className="font-bold">{user?.followers?.length}</h1>
             <p>followers</p>
           </div>
         </Link>
-        <Link to={`/profile/following/${user._id}`}>
+        <Link to={`/profile/following/${user?._id}`}>
           <div className="text-center">
             <h1 className="font-bold">{user?.following?.length}</h1>
             <p>following</p>

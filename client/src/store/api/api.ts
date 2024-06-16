@@ -21,10 +21,20 @@ const api = createApi({
     }),
 
     updateProfile: builder.mutation({
-      query: (data) => ({
+      query: ({ data }) => ({
         url: "/users/user/updateProfile",
         credentials: "include",
         method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    deleteProfile: builder.mutation({
+      query: (data) => ({
+        url: "/users/user/",
+        credentials: "include",
+        method: "DELETE",
         body: data,
       }),
       invalidatesTags: ["User"],
@@ -231,6 +241,7 @@ const api = createApi({
 export const {
   useGetProfileQuery,
   useUpdateProfileMutation,
+  useDeleteProfileMutation,
   useSearchUserQuery,
   useGetNotificationsQuery,
   useManageRequestMutation,

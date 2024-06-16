@@ -8,11 +8,11 @@ import {
   Input,
   User,
   Button,
+  Spinner,
 } from "@nextui-org/react";
 import { ChildProps, User as UserInterface } from "../../interfaces/common";
 import { LuSearch } from "react-icons/lu";
 import { useCreateChatMutation, useGetFriendsQuery } from "../../store/api/api";
-import Loader from "../shared/Loader";
 import { useMemo, useState } from "react";
 import { useAsyncMutation } from "../../hooks/hooks";
 import { StoreState } from "../../interfaces/storeInterface";
@@ -48,7 +48,7 @@ function SearchChatModal({ children }: ChildProps) {
     }, [query]) || friends?.data;
 
   return isLoading ? (
-    <Loader />
+    <Spinner />
   ) : (
     <div>
       <button onClick={onOpen}>{children}</button>

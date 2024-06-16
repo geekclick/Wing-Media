@@ -2,9 +2,12 @@ import { ALERT, NEW_REQUEST, REFETCH_CHATS } from "../../Constants/events.js";
 import { createError, createResponse, decodeToken, getOtherMember, getSockets } from "../../Helpers/index.js";
 import { TryCatch } from "../../Middlewares/errorMiddleware.js";
 import { Chat } from "../../Models/chatModel.js";
+import { Message } from "../../Models/messageModel.js";
+import Post from "../../Models/postModel.js";
 import { Request } from "../../Models/requestModel.js";
+import { Story } from "../../Models/storyModel.js";
 import User from "../../Models/userModel.js";
-import { emitEvent } from "../../Utils/features.js";
+import { emitEvent, uploadFileToCloudinary } from "../../Utils/features.js";
 import userServices from "./userServices.js";
 
 class UserController {
@@ -40,13 +43,25 @@ class UserController {
     })
 
     updateProfile = TryCatch(async (req, res, next) => {
-        const data = req.body
+        const data = JSON.parse(req.body.data)
         const user = await User.findById(req.user)
         if (user) {
+            let image = null;
+            if (req.file) {
+                try {
+                    image = await uploadFileToCloudinary(req.file, '/wing/profile');
+                } catch (uploadError) {
+                    return createError(res, 500, "File upload failed: " + uploadError.message);
+                }
+                user.avatar = { publicId: image.public_id, url: image.secure_url }
+            } else {
+                user.avatar = data.avatar
+            }
+
+
             user.name = data.name
             user.username = data.username
             user.email = data.email
-            user.avatar = data.avatar
             user.bio = data.bio
 
             await user.save()
@@ -233,6 +248,29 @@ class UserController {
             emitEvent(req, REFETCH_CHATS, members);
 
             return createResponse(res, 200, "Follow request accepted!", request.sender._id, 200);
+        }
+    });
+
+    deleteUserAccount = TryCatch(async (req, res, next) => {
+        const id = req.body.data;
+        try {
+            await Promise.all([
+                User.findByIdAndDelete(id),
+                Post.deleteMany({ user_id: id }),
+                Story.deleteMany({ user_id: id }),
+                Chat.deleteMany({ members: id }),
+                Request.deleteMany({ $or: [{ sender: id }, { receiver: id }] })
+            ]);
+
+            const userChats = await Chat.find({ members: id });
+            const chatIds = userChats.map(chat => chat._id);
+
+            await Message.deleteMany({ chat: { $in: chatIds } });
+
+            createResponse(res, 200, "User account deleted successfully", null, 200)
+        } catch (error) {
+            console.error(`Error deleting user!`, error);
+            createError(res, 400, "Error in deleting account")
         }
     });
 }

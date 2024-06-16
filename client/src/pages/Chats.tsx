@@ -4,11 +4,9 @@ import UserChat from "../components/chat/UserChat";
 import { useSelector } from "react-redux";
 import { StoreState } from "../interfaces/storeInterface";
 import DesktopSidebar from "../components/shared/DesktopSidebar";
-import { useGetChatsQuery } from "../store/api/api";
 import { Chat as ChatInterface } from "../interfaces/common";
 import { useEffect } from "react";
 import { useSocket } from "../socket";
-import Loader from "../components/shared/Loader";
 import { CHAT_JOINED, CHAT_LEAVED } from "../constants/events";
 
 interface ChatProps {
@@ -36,13 +34,11 @@ export const Chat = ({ user, chat }: ChatProps) => {
 
 function Chats() {
   const user = useSelector((state: StoreState) => state.userSlice.user);
-  const { isLoading, data: chats } = useGetChatsQuery();
-  const validChats = chats?.data?.filter(
+  const { chats } = useSelector((state: StoreState) => state.chatSlice);
+  const validChats = chats?.filter(
     (c: ChatInterface) => user._id && c.members?.includes(user._id)
   );
-  return isLoading ? (
-    <Loader />
-  ) : (
+  return (
     <>
       <DesktopSidebar />
       <div className="lg:w-[600px] lg:m-auto lg:py-6">

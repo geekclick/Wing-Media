@@ -49,8 +49,8 @@ function Stories() {
   }, [stories, deleteStory, refetch]);
 
   const myStory = useMemo(
-    () => stories.find((story) => story.user_id === user._id),
-    [stories, user._id]
+    () => stories.find((story) => story?.user_id === user?._id),
+    [stories, user?._id]
   );
 
   return (

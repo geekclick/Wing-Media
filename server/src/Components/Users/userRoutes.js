@@ -1,6 +1,7 @@
 import express from "express"
 import userController from "./userController.js";
 import { isAuthenticated } from "../../Middlewares/authMiddleware.js";
+import { singleImage } from "../../Middlewares/multerMiddleware.js";
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.get("/user/:id", (req, res) => {
 });
 
 // update my profile
-router.put("/user/updateProfile", (req, res) => {
+router.put("/user/updateProfile", singleImage, (req, res) => {
     userController.updateProfile(req, res);
 });
 
@@ -46,12 +47,11 @@ router.post("/acceptrequest", (req, res) => {
     userController.acceptFriendRequest(req, res)
 })
 
-// delete me
-router.delete("/user", (req, res) => {
-    userController.logout(req, res);
-});
-
 router.get("/friends", (req, res) => {
     userController.getFriends(req, res);
 });
+
+router.delete("/user", (req, res) => {
+    userController.deleteUserAccount(req, res);
+})
 export default router

@@ -33,7 +33,7 @@ function App() {
     }, 2000);
   }, []);
 
-  return  loader ? (
+  return loader ? (
     <div className="w-full h-screen flex flex-col bg-white justify-center items-center overflow-hidden relative">
       <motion.div
         initial={{ scale: 0 }}
@@ -49,8 +49,8 @@ function App() {
     </div>
   ) : (
     <>
-      {!isLoading && <UserAuth />}
       <BrowserRouter basename="/">
+        {!isLoading && <UserAuth />}
         <AnimatePresence mode="wait">
           <Routes>
             <Route path="/" element={<Home />} />

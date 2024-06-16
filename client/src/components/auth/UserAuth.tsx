@@ -21,8 +21,10 @@ import { StoreState } from "../../interfaces/storeInterface";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { SERVER_URL } from "../../constants";
+import { useNavigate } from "react-router-dom";
 
 export default function UserAuth() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     register,
@@ -51,6 +53,7 @@ export default function UserAuth() {
       );
       if (response) {
         dispatch(setIsLoggedIn(true));
+        navigate("/");
         toast.success("Login Successful!");
         reset();
       }
@@ -70,7 +73,7 @@ export default function UserAuth() {
       if (response) {
         dispatch(setIsLoggedIn(true));
         toast.success("Register Successful!");
-        window.location.href = "/profile/edit";
+        navigate("/profile/edit");
         reset();
       }
     } catch (error: any) {
