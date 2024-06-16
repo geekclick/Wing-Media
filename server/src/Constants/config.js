@@ -10,7 +10,7 @@ const corsOptions = {
     credentials: true,
 };
 
-export const cookieOptions = {
+const cookieOptions = {
     httpOnly: true,
     secure: true,
     sameSite: 'None',
