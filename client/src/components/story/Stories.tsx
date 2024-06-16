@@ -35,7 +35,7 @@ function Stories() {
     );
 
     for (const story of expiredStories) {
-      if (story._id) {
+      if (story?._id) {
         await deleteStory({ data: story?._id });
       }
     }
@@ -72,7 +72,7 @@ function Stories() {
           </Link>
         </>
       ) : (
-        <Link to={`/stories/${myStory._id}`}>
+        <Link to={`/stories/${myStory?._id}`}>
           <Avatar
             isBordered
             color="primary"
@@ -89,7 +89,7 @@ function Stories() {
       )}
 
       {stories.map((story) => (
-        <OtherUserStory key={story._id} story={story} />
+        <OtherUserStory key={story?._id} story={story} />
       ))}
     </section>
   );
@@ -98,20 +98,20 @@ function Stories() {
 export default Stories;
 
 export function OtherUserStory({ story }: { story: Story }) {
-  const { isLoading, data } = useGetUserQuery(story.user_id);
+  const { isLoading, data } = useGetUserQuery(story?.user_id);
   const user = useSelector((state: StoreState) => state.userSlice.user);
 
   const notFollowing = useMemo(
-    () => user?.following?.includes(story.user_id),
-    [user.following, story.user_id]
+    () => user?.following?.includes(story?.user_id),
+    [user?.following, story?.user_id]
   );
 
-  if (story.user_id === user._id || !notFollowing) return null;
+  if (story?.user_id === user?._id || !notFollowing) return null;
 
   return isLoading ? (
     <Loader />
   ) : (
-    <Link to={`/stories/${story._id}`}>
+    <Link to={`/stories/${story?._id}`}>
       <Avatar
         isBordered
         color="primary"

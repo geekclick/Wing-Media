@@ -46,7 +46,7 @@ function UserHeader({ chatId, otherUser }: UserHeaderProps) {
   );
 
   const isOnline = useMemo(() => {
-    return otherUser._id && onlineUsers?.includes(otherUser?._id);
+    return otherUser?._id && onlineUsers?.includes(otherUser?._id);
   }, [onlineUsers]);
   const chatDelete = async () => {
     try {

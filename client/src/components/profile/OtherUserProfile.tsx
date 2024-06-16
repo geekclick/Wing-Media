@@ -20,7 +20,7 @@ function OtherUserProfile() {
   const navigate = useNavigate();
   const { user: me } = useSelector((state: StoreState) => state.userSlice);
   const { id: userId } = useParams<{ id: string }>();
-  if (me._id == userId) navigate("/profile");
+  if (me?._id == userId) navigate("/profile");
   const [zoom, setZoom] = useState(false);
   const posts = useSelector((state: StoreState) => state.postSlice.posts);
   const { isLoading, data, refetch } = useGetUserQuery(userId);
@@ -51,7 +51,7 @@ function OtherUserProfile() {
       });
       setBtnState(true);
     } else {
-      socket?.emit(UNFOLLOW_USER, { userA: me._id, userB: userId });
+      socket?.emit(UNFOLLOW_USER, { userA: me?._id, userB: userId });
       setBtnState(false);
     }
   };
@@ -134,7 +134,7 @@ function OtherUserProfile() {
           </div>
 
           {posts
-            ?.filter((p) => p.user_id == userId)
+            ?.filter((p) => p?.user_id == userId)
             .reverse()
             ?.map((post: Post) => (
               <PostComponent key={post.created_at} {...post} />

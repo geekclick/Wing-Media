@@ -26,7 +26,7 @@ function StoryPage() {
   // const { captionStyle } = useSelector(
   //   (state: StoreState) => state.commonSlice
   // );
-  const thisStory = stories.find((story) => story._id === id);
+  const thisStory = stories.find((story) => story?._id === id);
   const { isLoading, data } = useGetUserQuery(thisStory?.user_id);
   const [deleteStory] = useAsyncMutation(useDeleteStoryMutation);
 
@@ -87,7 +87,7 @@ function StoryPage() {
               />
             </Link>
           </div>
-          {user._id == thisStory?.user_id && (
+          {user?._id == thisStory?.user_id && (
             <Dropdown>
               <DropdownTrigger>
                 <Button isIconOnly>

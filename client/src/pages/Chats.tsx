@@ -26,7 +26,7 @@ export const Chat = ({ user, chat }: ChatProps) => {
   }, []);
 
   return (
-    <Link to={`/chats/${chat._id}`}>
+    <Link to={`/chats/${chat?._id}`}>
       <UserChat {...chat} />
     </Link>
   );
@@ -36,7 +36,7 @@ function Chats() {
   const user = useSelector((state: StoreState) => state.userSlice.user);
   const { chats } = useSelector((state: StoreState) => state.chatSlice);
   const validChats = chats?.filter(
-    (c: ChatInterface) => user._id && c.members?.includes(user._id)
+    (c: ChatInterface) => user?._id && c.members?.includes(user?._id)
   );
   return (
     <>
@@ -44,7 +44,7 @@ function Chats() {
       <div className="lg:w-[600px] lg:m-auto lg:py-6">
         <ChatPageHeader />
         {validChats?.map((chat: ChatInterface) => {
-          return <Chat user={user._id} chat={chat} key={chat._id} />;
+          return <Chat user={user?._id} chat={chat} key={chat?._id} />;
         })}
       </div>
     </>

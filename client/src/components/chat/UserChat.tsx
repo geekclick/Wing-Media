@@ -13,7 +13,7 @@ function UserChat({ _id, members }: Chat) {
     (state: StoreState) => state.chatSlice.messageCount
   );
   const messageCountObj = chats.find((mc) => mc.chatId === _id);
-  const userId = getOtherUser(user._id, members);
+  const userId = getOtherUser(user?._id, members);
 
   const { data: userData, refetch: refetchUser } = useGetUserQuery(userId);
   const { isLoading, data: messageData } = useGetMessagesQuery(_id);

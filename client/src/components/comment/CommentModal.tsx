@@ -46,11 +46,11 @@ function CommentModal({ children, post }: CommentModalProps) {
 
   async function handleComment() {
     await addComment("Posting", {
-      postId: post._id,
+      postId: post?._id,
       body: {
         user: {
           username: user.username,
-          avatar: { public_id: user.avatar?.public_id, url: user.avatar?.url },
+          avatar: { public_id: user.avatar?.public_id, url: user?.avatar?.url },
         },
         content: text,
       },
@@ -88,7 +88,7 @@ function CommentModal({ children, post }: CommentModalProps) {
                   {post.comments?.length != 0 ? (
                     post.comments?.map((c) => {
                       return (
-                        <div key={c._id}>
+                        <div key={c?._id}>
                           <div className="py-4 flex w-full justify-between items-center">
                             <Link to={`/user/${c?._id}`}>
                               <User
@@ -107,8 +107,8 @@ function CommentModal({ children, post }: CommentModalProps) {
                                   className="text-danger"
                                   onClick={async () =>
                                     await deleteComment("Deleting", {
-                                      postId: post._id,
-                                      body: { comment_id: c._id },
+                                      postId: post?._id,
+                                      body: { comment_id: c?._id },
                                     })
                                   }
                                 />

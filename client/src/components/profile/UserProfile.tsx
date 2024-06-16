@@ -98,7 +98,7 @@ function UserProfile({ user, posts, isLoading }: UserProfileProps) {
       </div>
 
       {posts
-        ?.filter((p) => p.user_id == user?._id)
+        ?.filter((p) => p?.user_id == user?._id)
         .reverse()
         .map((post) => (
           <PostComponent key={post.created_at} {...post} />

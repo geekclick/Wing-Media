@@ -16,7 +16,7 @@ export default function Search() {
   const dispatch = useDispatch();
   const [query, setQuery] = useState("");
   const { user, users } = useSelector((state: StoreState) => state.userSlice);
-  const formatedUsers = users.filter((u) => u._id !== user._id);
+  const formatedUsers = users.filter((u) => u?._id !== user?._id);
   const { data } = useSearchUserQuery(query);
 
   useEffect(() => {

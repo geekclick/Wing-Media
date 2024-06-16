@@ -21,14 +21,14 @@ interface SearchResultProps {
 function SearchResult({ user }: SearchResultProps) {
   const [btnState, setBtnState] = useState(false);
   const me = useSelector((state: StoreState) => state.userSlice.user);
-  const isFriend = me.following?.some((id) => id === user._id);
+  const isFriend = me.following?.some((id) => id === user?._id);
   const [sendFriendRequest, isLoading] = useAsyncMutation(
     useSendRequestMutation
   );
 
   return (
     <div className="flex justify-between items-center w-full">
-      <Link to={`/user/${user._id}`}>
+      <Link to={`/user/${user?._id}`}>
         <NextUIUser
           name={user.name}
           description={user.username}
@@ -44,7 +44,7 @@ function SearchResult({ user }: SearchResultProps) {
           className="text-xl"
           role="button"
           onClick={async () => {
-            await sendFriendRequest("Request sending..", { userId: user._id });
+            await sendFriendRequest("Request sending..", { userId: user?._id });
             setBtnState(true);
           }}
         />
@@ -73,9 +73,9 @@ function DiscoverPage() {
             {users.length !== 0 ? (
               <div className="flex flex-col space-y-5 justify-center items-start p-5">
                 {users
-                  .filter((u) => u._id !== user._id)
+                  .filter((u) => u?._id !== user?._id)
                   .map((u) => (
-                    <SearchResult user={u} key={u._id} />
+                    <SearchResult user={u} key={u?._id} />
                   ))}
               </div>
             ) : (

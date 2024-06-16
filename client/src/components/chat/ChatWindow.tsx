@@ -34,7 +34,7 @@ const ChatWindow = () => {
   const { chats, messageCount } = useSelector(
     (state: StoreState) => state.chatSlice
   );
-  const chat = chats.filter((c) => c._id === id)[0];
+  const chat = chats.filter((c) => c?._id === id)[0];
   const user = useSelector((state: StoreState) => state.userSlice.user);
   const otherUserId = getOtherUser(user?._id, chat?.members);
   const { data: userData } = useGetUserQuery(otherUserId);
@@ -66,9 +66,9 @@ const ChatWindow = () => {
   }, [handleRefetchMessages, socket]);
 
   useEffect(() => {
-    socket?.emit(CHAT_JOINED, { userId: user._id, members: chat.members });
+    socket?.emit(CHAT_JOINED, { userId: user?._id, members: chat?.members });
     return () => {
-      socket?.emit(CHAT_LEAVED, { userId: user._id, members: chat.members });
+      socket?.emit(CHAT_LEAVED, { userId: user?._id, members: chat?.members });
     };
   }, []);
 

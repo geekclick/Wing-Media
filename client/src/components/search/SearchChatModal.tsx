@@ -30,7 +30,7 @@ function SearchChatModal({ children }: ChildProps) {
     name: string | undefined
   ) => {
     try {
-      const body = { name: `${user.name}-${name}`, members: [user._id, _id] };
+      const body = { name: `${user?.name}-${name}`, members: [user?._id, _id] };
       await createChat("Please wait", { data: body });
       onClose();
     } catch (error) {
@@ -79,7 +79,7 @@ function SearchChatModal({ children }: ChildProps) {
                   {filteredFriends?.map((u: UserInterface) => (
                     <div
                       onClick={() => handleChat(u?._id, u?.name)}
-                      key={u._id}
+                      key={u?._id}
                     >
                       {" "}
                       <User

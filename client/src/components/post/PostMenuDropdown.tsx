@@ -39,7 +39,7 @@ export default function PostMenuDropdown({
   };
 
   const handleUnfollow = async () => {
-    socket?.emit(UNFOLLOW_USER, { userA: user._id, userB: userId });
+    socket?.emit(UNFOLLOW_USER, { userA: user?._id, userB: userId });
     setBtnState(false);
   };
 

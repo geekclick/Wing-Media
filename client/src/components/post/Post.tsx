@@ -41,7 +41,7 @@ export default function PostComponent({ ...post }: Post) {
   const [playing, setPlaying] = useState(false);
 
   const [isLiked, setIsLiked] = useState(
-    user._id && post.likes?.includes(user?._id)
+    user?._id && post.likes?.includes(user?._id)
   );
 
   const handleLike = () => {
@@ -74,7 +74,7 @@ export default function PostComponent({ ...post }: Post) {
     <>
       <Card className="max-w-screen rounded-none shadow-sm">
         <CardHeader className="justify-between">
-          <Link to={`/user/${post.user_id}`}>
+          <Link to={`/user/${post?.user_id}`}>
             <div className="flex gap-5">
               <Avatar
                 radius="full"
@@ -92,7 +92,7 @@ export default function PostComponent({ ...post }: Post) {
               </div>
             </div>
           </Link>
-          <PostMenuDropdown userId={post.user_id} postId={post._id}>
+          <PostMenuDropdown userId={post?.user_id} postId={post?._id}>
             <BsThreeDots className="text-xl mx-2" />
           </PostMenuDropdown>
         </CardHeader>

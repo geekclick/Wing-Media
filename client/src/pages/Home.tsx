@@ -26,7 +26,7 @@ function Home() {
           {posts.length !== 0 ? (
             [...posts]
               .reverse()
-              .map((post) => <PostComponent key={post._id} {...post} />)
+              .map((post) => <PostComponent key={post?._id} {...post} />)
           ) : (
             <div className="h-screen absolute top-0 w-full flex flex-col justify-center items-center">
               <RiCameraLine className="text-9xl text-gray-300" />

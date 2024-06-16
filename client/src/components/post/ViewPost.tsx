@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 function ViewPost() {
   const { id } = useParams();
   const posts = useSelector((state: StoreState) => state.postSlice.posts);
-  const post = posts.find((p) => p._id == id);
+  const post = posts.find((p) => p?._id == id);
 
   return (
     <>

@@ -58,7 +58,7 @@ function Notification() {
         ) : (
           notificaions?.map((not) => {
             return (
-              <div className="p-4" key={not._id}>
+              <div className="p-4" key={not?._id}>
                 <Card>
                   <CardBody>
                     <div className="flex justify-between items-center">
@@ -77,9 +77,9 @@ function Notification() {
                           size="sm"
                           variant="light"
                           onClick={async () => {
-                            if (not._id)
+                            if (not?._id)
                               await manageRequest("Request Accepting", {
-                                requestId: not._id,
+                                requestId: not?._id,
                                 accept: false,
                               });
                             refetch();
@@ -93,9 +93,9 @@ function Notification() {
                           color="primary"
                           size="sm"
                           onClick={async () => {
-                            if (not._id)
+                            if (not?._id)
                               await manageRequest("Request Accepting", {
-                                requestId: not._id,
+                                requestId: not?._id,
                                 accept: true,
                               });
                             dispatch(decrementNotifications());

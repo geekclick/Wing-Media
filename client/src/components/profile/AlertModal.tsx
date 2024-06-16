@@ -22,8 +22,8 @@ function AlertModal({ children }: ChildProps) {
 
   const handleDeleteProfile = async () => {
     try {
-      if (user._id) {
-        await deleteProfile({ data: user._id });
+      if (user?._id) {
+        await deleteProfile({ data: user?._id });
         const response = await axios.get(`${SERVER_URL}/api/auth/logout`, {
           withCredentials: true,
         });

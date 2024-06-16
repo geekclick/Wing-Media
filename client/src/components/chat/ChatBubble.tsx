@@ -27,18 +27,18 @@ const ChatBubble = (message: Message) => {
 
   const deleteMessage = async () => {
     try {
-      await deleteMsg("Deleting", { id: message._id });
+      await deleteMsg("Deleting", { id: message?._id });
     } catch (error) {
       console.log(error);
     }
   };
   const user = useSelector((state: StoreState) => state.userSlice.user);
-  const isUser = user._id && user?._id === message?.sender ? true : false;
+  const isUser = user?._id && user?._id === message?.sender ? true : false;
   return (
     message && (
       <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-2`}>
         <div className="flex justify-center items-end space-x-2">
-          {user._id != message.sender ? (
+          {user?._id != message.sender ? (
             <>
               <div
                 className={`max-w-xs p-3 rounded-lg text-white ${
