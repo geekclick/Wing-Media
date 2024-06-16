@@ -4,9 +4,7 @@ dotenv.config()
 const corsOptions = {
     origin: [
         process.env.CLIENT_URL,
-        'https://wing-media.vercel.app',
         "http://localhost:5173",
-        "http://localhost:5000",
     ],
     methods: "POST, GET, DELETE, PUT",
     credentials: true,
