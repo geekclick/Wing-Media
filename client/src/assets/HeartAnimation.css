@@ -1,0 +1,18 @@
+.heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 100px;
+    height: 100px;
+    background: url('https://res.cloudinary.com/dxn3cmvet/image/upload/v1717697629/wing/tuyzxn7vnp5bafigvuaj.png') no-repeat center center;
+    background-size: contain;
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    z-index:1000;
+}
+
+.heart.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
