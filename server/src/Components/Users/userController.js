@@ -97,7 +97,6 @@ class UserController {
 
     getFriends = TryCatch(async (req, res, next) => {
         const chatId = req.query.chatId;
-        console.log(chatId);
         const chats = await Chat.find({
             members: req.user,
             groupChat: false,
@@ -183,7 +182,6 @@ class UserController {
                 sender: req.user,
                 receiver: userId
             });
-            console.log("object")
             receiver.followers.push(sender);
             sender.following.push(receiver);
 

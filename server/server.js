@@ -45,7 +45,6 @@ io.use((socket, next) => {
     if (!token) {
         return next(new Error('Authentication error'));
     }
-    console.log(token)
     next()
     socket.user = decodeJwt(token)
 });
