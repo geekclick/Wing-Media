@@ -1,7 +1,9 @@
 import express from "express"
 import { ClearMessages, CreateChat, DeleteChat, DeleteMessage, getChats, getMessages } from "./chatController.js";
+import authorized from "../../Middlewares/authMiddleware.js";
 
 const router = express.Router();
+router.use(authorized)
 
 // get user profile
 router.get("/", (req, res) => {

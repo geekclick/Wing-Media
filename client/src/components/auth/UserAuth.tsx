@@ -35,7 +35,6 @@ export default function UserAuth() {
 
   const [selected, setSelected] = useState<string>("login");
   const login = useSelector((state: StoreState) => state.authSlice.isLoggedIn);
-
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -52,6 +51,7 @@ export default function UserAuth() {
         { withCredentials: true }
       );
       if (response) {
+        localStorage.setItem("token", response.data.data.token);
         dispatch(setIsLoggedIn(true));
         navigate("/");
         toast.success("Login Successful!");
@@ -71,6 +71,7 @@ export default function UserAuth() {
         { withCredentials: true }
       );
       if (response) {
+        localStorage.setItem("token", response.data.data.token);
         dispatch(setIsLoggedIn(true));
         toast.success("Register Successful!");
         navigate("/profile/edit");

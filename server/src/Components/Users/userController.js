@@ -1,5 +1,5 @@
 import { ALERT, NEW_REQUEST, REFETCH_CHATS } from "../../Constants/events.js";
-import { createError, createResponse, decodeToken, getOtherMember, getSockets } from "../../Helpers/index.js";
+import { createError, createResponse } from "../../Helpers/index.js";
 import { TryCatch } from "../../Middlewares/errorMiddleware.js";
 import { Chat } from "../../Models/chatModel.js";
 import { Message } from "../../Models/messageModel.js";
@@ -11,35 +11,25 @@ import { emitEvent, uploadFileToCloudinary } from "../../Utils/features.js";
 import userServices from "./userServices.js";
 
 class UserController {
-    async profile(req, res) {
-        try {
-            const token = decodeToken(req)
-            if (token) {
-                const user = await userServices.getProfile(token._id)
-                if (user) {
-                    return createResponse(res, 200, "Profile fetched!", user._doc, 200)
-                } else {
-                    return createError(res, 400, "Profile not found")
-                }
-            }
-        } catch (error) {
-            return createError(res, 400, error.message)
+    profile = TryCatch(async (req, res, next) => {
+        const user = await userServices.getProfile(req.user)
+        if (user) {
+            return createResponse(res, 200, "Profile fetched!", user._doc, 200)
+        } else {
+            return createError(res, 404, "Profile not found")
         }
-
-    }
+    })
 
     getUser = TryCatch(async (req, res, next) => {
         const userId = req.params.id
-
         if (userId) {
             const user = await User.findById(userId).select({ password: 0, isAdmin: 0, __v: 0 })
-
             if (user)
                 return createResponse(res, 200, "User found!", user._doc, 200)
             else
-                return createError(res, 400, "User not found")
+                return createError(res, 404, "User not found")
         }
-        return createError(res, 400, "User id not valid")
+        return createError(res, 400, "User id is not valid")
     })
 
     updateProfile = TryCatch(async (req, res, next) => {
@@ -67,7 +57,7 @@ class UserController {
             await user.save()
             return createResponse(res, 200, "Profile updated!", user, 200)
         }
-        return createError(res, 400, "User not found!")
+        return createError(res, 404, "User not found!")
 
     })
 
@@ -83,30 +73,26 @@ class UserController {
             const formattedUsers = users.map((user) => user._doc);
             return createResponse(res, 200, `Users found for ${query}`, formattedUsers, 200)
         } else
-            return createError(res, 400, "User not found!")
+            return createError(res, 404, "User not found!")
     })
 
     getNotifications = TryCatch(async (req, res, next) => {
-        const token = decodeToken(req)
-        if (token) {
-            const requests = await Request.find({ receiver: req.user }).populate(
-                "sender",
-                "name avatar"
-            );
-            if (requests.length != 0) {
-                const allRequests = requests.map(({ _id, sender }) => ({
-                    _id,
-                    sender: {
-                        _id: sender._id,
-                        name: sender.name,
-                        avatar: sender.avatar.url,
-                    },
-                }));
-                return createResponse(res, 200, "New requests", allRequests, 200)
-            } else
-                return createResponse(res, 200, "No new requests!", [], 200)
+        const requests = await Request.find({ receiver: req.user }).populate(
+            "sender",
+            "name avatar"
+        );
+        if (requests.length != 0) {
+            const allRequests = requests.map(({ _id, sender }) => ({
+                _id,
+                sender: {
+                    _id: sender._id,
+                    name: sender.name,
+                    avatar: sender.avatar.url,
+                },
+            }));
+            return createResponse(res, 200, "New requests", allRequests, 200)
         } else
-            return createError(res, 400, "Unauthorized user!")
+            return createResponse(res, 204, "No new requests!", 204)
     })
 
     getFriends = TryCatch(async (req, res, next) => {
@@ -163,7 +149,7 @@ class UserController {
         console.log(existingRequest)
         const isFollowed = sender.following.some((id) => id == receiver._id)
         if (isFollowed) {
-            return createResponse(res, 200, "Already Followed", 200)
+            return createResponse(res, 204, "Already Followed", 204)
         }
 
         const isOtherUserAlreadyFollowing = sender.followers.some((id) => id == userId)
@@ -189,7 +175,7 @@ class UserController {
             await Request.deleteOne({ receiver: req.user })
 
             emitEvent(req, REFETCH_CHATS, members);
-            return createResponse(res, 200, "Followed!", 200)
+            return createResponse(res, 204, "Followed!", 204)
         }
 
         if (!existingRequest) {
@@ -205,9 +191,9 @@ class UserController {
 
             emitEvent(req, NEW_REQUEST, [userId], null);
 
-            return createResponse(res, 200, "Request Sent!", null, 200);
+            return createResponse(res, 204, "Request Sent!", 204);
         } else {
-            return createError(res, 400, "Request Already Sent!");
+            return createResponse(res, 204, "Request Already Sent!", 204);
         }
     });
 
@@ -217,14 +203,14 @@ class UserController {
         const request = await Request.findById(requestId).populate("sender").populate("receiver");
 
         if (!request)
-            return createError(res, 400, "Request not found!");
+            return createError(res, 404, "Request not found!");
 
         if (request.receiver._id.toString() !== req.user.toString())
-            return createError(res, 400, "You are not authorized to accept this request!");
+            return createError(res, 401, "You are not authorized to accept this request!");
 
         if (!accept) {
             await request.deleteOne();
-            return createResponse(res, 400, "Request rejected!");
+            return createResponse(res, 204, "Request rejected!", 204);
         } else {
             const members = [request.sender._id, request.receiver._id];
 
@@ -253,25 +239,20 @@ class UserController {
 
     deleteUserAccount = TryCatch(async (req, res, next) => {
         const id = req.body.data;
-        try {
-            await Promise.all([
-                User.findByIdAndDelete(id),
-                Post.deleteMany({ user_id: id }),
-                Story.deleteMany({ user_id: id }),
-                Chat.deleteMany({ members: id }),
-                Request.deleteMany({ $or: [{ sender: id }, { receiver: id }] })
-            ]);
+        await Promise.all([
+            User.findByIdAndDelete(id),
+            Post.deleteMany({ user_id: id }),
+            Story.deleteMany({ user_id: id }),
+            Chat.deleteMany({ members: id }),
+            Request.deleteMany({ $or: [{ sender: id }, { receiver: id }] })
+        ]);
 
-            const userChats = await Chat.find({ members: id });
-            const chatIds = userChats.map(chat => chat._id);
+        const userChats = await Chat.find({ members: id });
+        const chatIds = userChats.map(chat => chat._id);
 
-            await Message.deleteMany({ chat: { $in: chatIds } });
+        await Message.deleteMany({ chat: { $in: chatIds } });
 
-            createResponse(res, 200, "User account deleted successfully", null, 200)
-        } catch (error) {
-            console.error(`Error deleting user!`, error);
-            createError(res, 400, "Error in deleting account")
-        }
+        createResponse(res, 200, "User account deleted successfully", null, 200)
     });
 }
 

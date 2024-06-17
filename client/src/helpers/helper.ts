@@ -32,3 +32,10 @@ export const getOrSaveFromLocal = ({
       : null;
   else localStorage.setItem(key, JSON.stringify(value));
 };
+
+export function generateAuthHeader() {
+  const token = localStorage.getItem("token");
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+}

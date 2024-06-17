@@ -1,11 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { SERVER_URL } from "../../constants";
+import { generateAuthHeader } from "../../helpers/helper";
 
 export interface RequestResponse {
   status: number;
   message: string;
   data: any;
 }
+
+const headers = generateAuthHeader();
 
 const api = createApi({
   reducerPath: "api",
@@ -15,7 +18,7 @@ const api = createApi({
     getProfile: builder.query<RequestResponse, void>({
       query: () => ({
         url: "/users/me",
-        credentials: "include",
+        headers: headers,
       }),
       keepUnusedDataFor: 0,
     }),
@@ -23,7 +26,7 @@ const api = createApi({
     updateProfile: builder.mutation({
       query: ({ data }) => ({
         url: "/users/user/updateProfile",
-        credentials: "include",
+        headers: headers,
         method: "PUT",
         body: data,
       }),
@@ -33,7 +36,7 @@ const api = createApi({
     deleteProfile: builder.mutation({
       query: (data) => ({
         url: "/users/user/",
-        credentials: "include",
+        headers: headers,
         method: "DELETE",
         body: data,
       }),
@@ -43,7 +46,7 @@ const api = createApi({
     searchUser: builder.query({
       query: (query) => ({
         url: `/users/search?q=${query}`,
-        credentials: "include",
+        headers: headers,
       }),
       providesTags: ["User"],
     }),
@@ -51,7 +54,7 @@ const api = createApi({
     getNotifications: builder.query<RequestResponse, void>({
       query: () => ({
         url: "/users/notifications",
-        credentials: "include",
+        headers: headers,
       }),
       keepUnusedDataFor: 0,
     }),
@@ -59,7 +62,7 @@ const api = createApi({
     manageRequest: builder.mutation({
       query: (data) => ({
         url: "/users/acceptrequest",
-        credentials: "include",
+        headers: headers,
         method: "POST",
         body: data,
       }),
@@ -68,7 +71,7 @@ const api = createApi({
     sendRequest: builder.mutation({
       query: (data) => ({
         url: "/users/sendrequest",
-        credentials: "include",
+        headers: headers,
         method: "POST",
         body: data,
       }),
@@ -77,7 +80,7 @@ const api = createApi({
     getUser: builder.query<RequestResponse, string | undefined>({
       query: (userId) => ({
         url: `/users/user/${userId}`,
-        credentials: "include",
+        headers: headers,
       }),
       providesTags: ["User"],
     }),
@@ -85,7 +88,7 @@ const api = createApi({
     getPosts: builder.query<RequestResponse, void>({
       query: () => ({
         url: "/posts",
-        credentials: "include",
+        headers: headers,
       }),
       providesTags: ["Post"],
     }),
@@ -93,7 +96,7 @@ const api = createApi({
     newPost: builder.mutation({
       query: ({ data }) => ({
         url: "/posts",
-        credentials: "include",
+        headers: headers,
         method: "POST",
         body: data,
       }),
@@ -103,7 +106,7 @@ const api = createApi({
     deletePost: builder.mutation({
       query: ({ postId }) => ({
         url: `/posts/post/${postId}`,
-        credentials: "include",
+        headers: headers,
         method: "DELETE",
       }),
       invalidatesTags: ["Post"],
@@ -112,7 +115,7 @@ const api = createApi({
     addLike: builder.mutation({
       query: (data) => ({
         url: `/posts/post/like`,
-        credentials: "include",
+        headers: headers,
         method: "POST",
         body: data,
       }),
@@ -122,7 +125,7 @@ const api = createApi({
     removeLike: builder.mutation({
       query: (data) => ({
         url: `/posts/post/unlike`,
-        credentials: "include",
+        headers: headers,
         method: "POST",
         body: data,
       }),
@@ -132,7 +135,7 @@ const api = createApi({
     addComment: builder.mutation({
       query: (data) => ({
         url: `/posts/comment/${data.postId}`,
-        credentials: "include",
+        headers: headers,
         method: "POST",
         body: data.body,
       }),
@@ -142,7 +145,7 @@ const api = createApi({
     deleteComment: builder.mutation({
       query: (data) => ({
         url: `/posts/comment/${data.postId}`,
-        credentials: "include",
+        headers: headers,
         method: "DELETE",
         body: data.body,
       }),
@@ -152,7 +155,7 @@ const api = createApi({
     getChats: builder.query<RequestResponse, void>({
       query: () => ({
         url: "/chats",
-        credentials: "include",
+        headers: headers,
       }),
       providesTags: ["Chat"],
     }),
@@ -160,7 +163,7 @@ const api = createApi({
     getMessages: builder.query<RequestResponse, void | string>({
       query: (chatId) => ({
         url: `/chats/${chatId}`,
-        credentials: "include",
+        headers: headers,
       }),
       keepUnusedDataFor: 0,
     }),
@@ -168,7 +171,7 @@ const api = createApi({
     createChat: builder.mutation({
       query: ({ data }) => ({
         url: "/chats",
-        credentials: "include",
+        headers: headers,
         method: "POST",
         body: data,
       }),
@@ -178,7 +181,7 @@ const api = createApi({
     deleteMessage: builder.mutation({
       query: (data) => ({
         url: `/chats/chat/${data.id}`,
-        credentials: "include",
+        headers: headers,
         method: "DELETE",
       }),
       invalidatesTags: ["Chat"],
@@ -187,7 +190,7 @@ const api = createApi({
     clearMessages: builder.mutation({
       query: (data) => ({
         url: `/chats/chat?chatId=${data.id}`,
-        credentials: "include",
+        headers: headers,
         method: "DELETE",
       }),
       invalidatesTags: ["Chat"],
@@ -196,7 +199,7 @@ const api = createApi({
     deleteChat: builder.mutation({
       query: (data) => ({
         url: `/chats/${data.id}`,
-        credentials: "include",
+        headers: headers,
         method: "DELETE",
       }),
       invalidatesTags: ["Chat"],
@@ -205,7 +208,7 @@ const api = createApi({
     getFriends: builder.query<RequestResponse, void | string>({
       query: () => ({
         url: `/users/friends`,
-        credentials: "include",
+        headers: headers,
       }),
       keepUnusedDataFor: 0,
     }),
@@ -213,7 +216,7 @@ const api = createApi({
     getStory: builder.query<RequestResponse, void>({
       query: () => ({
         url: `/stories/`,
-        credentials: "include",
+        headers: headers,
       }),
       keepUnusedDataFor: 0,
     }),
@@ -221,7 +224,7 @@ const api = createApi({
     addStory: builder.mutation({
       query: ({ data }) => ({
         url: "/stories",
-        credentials: "include",
+        headers: headers,
         method: "POST",
         body: data,
       }),
@@ -231,7 +234,7 @@ const api = createApi({
     deleteStory: builder.mutation({
       query: ({ data }) => ({
         url: `/stories/${data}`,
-        credentials: "include",
+        headers: headers,
         method: "DELETE",
       }),
       invalidatesTags: ["Story"],

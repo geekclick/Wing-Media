@@ -1,7 +1,9 @@
 import express from "express"
 import storyController from "./storiesController.js";
 import { singleImage } from "../../Middlewares/multerMiddleware.js";
+import authorized from "../../Middlewares/authMiddleware.js";
 const router = express.Router();
+router.use(authorized)
 
 router.get("/", (req, res) => {
     storyController.getStories(req, res)

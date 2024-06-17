@@ -17,6 +17,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import User from './src/Models/userModel.js';
 import { Request } from './src/Models/requestModel.js';
 import { Chat } from './src/Models/chatModel.js';
+import authorized from './src/Middlewares/authMiddleware.js';
 dotenv.config()
 
 const app = express();
@@ -42,7 +43,7 @@ app.use(errorMiddleware);
 routes(app);
 
 io.use((socket, next) => {
-    const token = socket.handshake.headers.cookie?.split('; ').find(cookie => cookie.startsWith('token='))?.split('=')[1];
+    const token = socket.handshake.headers.authorization.split(' ')[1];
     if (token) {
         socket.user = decodeJwt(token)
         next()

@@ -1,9 +1,10 @@
 import express from "express";
 import postController from "./postController.js";
 import { singleImage } from "../../Middlewares/multerMiddleware.js";
+import authorized from "../../Middlewares/authMiddleware.js";
 
 const router = express.Router();
-
+router.use(authorized)
 // get all posts
 router.get("/", (req, res) => {
     postController.getPosts(req, res);
@@ -15,14 +16,7 @@ router.post("/", singleImage, (req, res) => {
 });
 
 // get post by id
-router.get("/post/:id", (req, res) => {
-    postController.getPostById(req, res);
-});
-
 // update post by id
-router.put("/post/:id", (req, res) => {
-    postController.updatePost(req, res);
-});
 
 // delete post by id
 router.delete("/post/:id", (req, res) => {

@@ -29,7 +29,7 @@ import {
   useGetProfileQuery,
   useGetStoryQuery,
 } from "../store/api/api";
-import { getOrSaveFromLocal } from "../helpers/helper";
+import { generateAuthHeader, getOrSaveFromLocal } from "../helpers/helper";
 import { setStories } from "../store/reducers/storySlice";
 import { Message } from "../interfaces/common";
 import {
@@ -57,12 +57,10 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
     const stories = useGetStoryQuery();
     const isAuthorized = useCallback(async () => {
       try {
-        dispatch(setIsLoading(true));
+        const headers = generateAuthHeader();
         const response = await axios.get(
           `${SERVER_URL}/api/auth/authenticate`,
-          {
-            withCredentials: true,
-          }
+          { headers }
         );
         if (response.data) {
           dispatch(setIsLoggedIn(true));

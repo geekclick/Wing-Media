@@ -26,6 +26,7 @@ function UserProfile({ user, posts, isLoading }: UserProfileProps) {
         withCredentials: true,
       });
       if (response) {
+        localStorage.removeItem("token");
         dispatch(setIsLoggedIn(false));
         toast.success("Log out Successful!");
       }

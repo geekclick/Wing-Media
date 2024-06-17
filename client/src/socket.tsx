@@ -1,6 +1,7 @@
 import React, { createContext, useMemo, useContext, ReactNode } from "react";
 import io, { Socket } from "socket.io-client";
 import { SERVER_URL } from "./constants";
+import { generateAuthHeader } from "./helpers/helper";
 
 // Define the context type
 interface SocketContextType {
@@ -9,7 +10,6 @@ interface SocketContextType {
 
 // Create a context with an initial value of null
 const SocketContext = createContext<SocketContextType | null>(null);
-
 // Custom hook to consume the SocketContext
 export const useSocket = (): Socket | null => {
   const context = useContext(SocketContext);
@@ -25,9 +25,10 @@ interface SocketProviderProps {
 
 // SocketProvider component
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
+  const headers = useMemo(() => generateAuthHeader(), []);
   const socket = useMemo<Socket>(() => {
     const s = io(SERVER_URL, {
-      withCredentials: true,
+      extraHeaders: headers,
     });
 
     s.on("connect", () => {

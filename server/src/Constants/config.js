@@ -10,13 +10,6 @@ const corsOptions = {
     credentials: true,
 };
 
-const cookieOptions = {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'None',
-    maxAge: 24 * 60 * 60 * 1000,
-};
-
 const STORY_DURATION = 24 * 60 * 60 * 1000;
 
-export { corsOptions, cookieOptions, STORY_DURATION }
+export { corsOptions, STORY_DURATION }

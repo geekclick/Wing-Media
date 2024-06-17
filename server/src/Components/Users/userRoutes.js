@@ -1,11 +1,11 @@
 import express from "express"
 import userController from "./userController.js";
-import { isAuthenticated } from "../../Middlewares/authMiddleware.js";
+import authorized from "../../Middlewares/authMiddleware.js";
 import { singleImage } from "../../Middlewares/multerMiddleware.js";
 
 const router = express.Router();
 
-router.use(isAuthenticated)
+router.use(authorized)
 
 // get my prfile
 router.get("/me", (req, res) => {
