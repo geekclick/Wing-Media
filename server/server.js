@@ -7,7 +7,6 @@ import { connectDB } from "./src/DB/db.js"
 import routes from './src/Routes/index.js';
 import dotenv from "dotenv"
 import morgan from "morgan"
-import cookieParser from 'cookie-parser';
 import { decodeJwt, getSockets } from './src/Helpers/index.js';
 import { corsOptions } from "./src/Constants/config.js"
 import { CHAT_JOINED, CHAT_LEAVED, NEW_MESSAGE, ONLINE_USERS, START_TYPING, STOP_TYPING } from './src/Constants/events.js';
@@ -37,7 +36,6 @@ app.set("io", io);
 
 app.use(cors(corsOptions))
 app.use(express.json());
-app.use(cookieParser())
 app.use(morgan('dev')) // for logging http request to console
 app.use(errorMiddleware);
 routes(app);

@@ -4,7 +4,6 @@ import authorized from "../../Middlewares/authMiddleware.js";
 import { singleImage } from "../../Middlewares/multerMiddleware.js";
 
 const router = express.Router();
-
 router.use(authorized)
 
 // get my prfile
