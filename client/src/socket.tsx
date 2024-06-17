@@ -26,26 +26,29 @@ interface SocketProviderProps {
 // SocketProvider component
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const headers = useMemo(() => generateAuthHeader(), []);
-  const socket = useMemo<Socket>(() => {
-    const s = io(SERVER_URL, {
-      extraHeaders: headers,
-    });
+  const socket =
+    localStorage.getItem("token") != null
+      ? useMemo<Socket>(() => {
+          const s = io(SERVER_URL, {
+            extraHeaders: headers,
+          });
 
-    s.on("connect", () => {
-      console.log("Connected to server");
-    });
+          s.on("connect", () => {
+            console.log("Connected to server");
+          });
 
-    s.on("connect_error", (error) => {
-      console.error("Connection error:", error);
-    });
+          s.on("connect_error", (error) => {
+            console.error("Connection error:", error);
+          });
 
-    s.on("disconnect", (reason) => {
-      socket.disconnect();
-      console.log("Disconnected from server:", reason);
-    });
+          s.on("disconnect", (reason) => {
+            socket?.disconnect();
+            console.log("Disconnected from server:", reason);
+          });
 
-    return s;
-  }, []);
+          return s;
+        }, [])
+      : null;
   return (
     <SocketContext.Provider value={{ socket }}>
       {children}

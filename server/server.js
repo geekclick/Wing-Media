@@ -42,19 +42,19 @@ routes(app);
 
 io.use((socket, next) => {
     const token = socket.handshake.headers.authorization.split(' ')[1];
-    if (token) {
-        socket.user = decodeJwt(token)
-        next()
-    } else {
-        next(new Error('Authentication error'));
+    if (!token) {
+        return next(new Error('Authentication error'));
     }
+    console.log(token)
+    next()
+    socket.user = decodeJwt(token)
 });
 
 
 io.on("connection", (socket) => {
-    console.log(`User connected: ${socket.user._id}`)
+    console.log(`User connected: ${socket.user?._id}`)
     const user = socket.user;
-    userSocketIDs.set(user._id.toString(), socket.id);
+    userSocketIDs.set(user?._id.toString(), socket.id);
 
     socket.on(NEW_MESSAGE, async ({ chatId, members, message }) => {
         const messageForRealTime = {
@@ -145,8 +145,8 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", () => {
-        userSocketIDs.delete(user._id.toString());
-        onlineUsers.delete(user._id.toString());
+        userSocketIDs.delete(user?._id.toString());
+        onlineUsers.delete(user?._id.toString());
         socket.broadcast.emit(ONLINE_USERS, Array.from(onlineUsers));
     });
 });

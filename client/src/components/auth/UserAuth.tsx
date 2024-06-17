@@ -58,8 +58,8 @@ export default function UserAuth() {
         reset();
       }
     } catch (error: any) {
-      console.log(error.response.data.message);
-      toast.error(error.response.data.message);
+      console.log(error.response);
+      toast.error(error.response);
     }
   };
   const handleRegister: SubmitHandler<User> = async (formData, e) => {
