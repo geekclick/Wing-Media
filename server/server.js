@@ -8,7 +8,7 @@ import routes from './src/Routes/index.js';
 import dotenv from "dotenv"
 import morgan from "morgan"
 import { decodeJwt, getSockets } from './src/Helpers/index.js';
-import { corsOptions } from "./src/Constants/config.js"
+import { corsOptions, endpoints } from "./src/Constants/config.js"
 import { CHAT_JOINED, CHAT_LEAVED, NEW_MESSAGE, ONLINE_USERS, START_TYPING, STOP_TYPING } from './src/Constants/events.js';
 import { Message } from './src/Models/messageModel.js';
 import { v4 as uuid } from "uuid"
@@ -16,7 +16,9 @@ import { v2 as cloudinary } from 'cloudinary'
 import User from './src/Models/userModel.js';
 import { Request } from './src/Models/requestModel.js';
 import { Chat } from './src/Models/chatModel.js';
-import authorized from './src/Middlewares/authMiddleware.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 dotenv.config()
 
 const app = express();
@@ -39,6 +41,21 @@ app.use(express.json());
 app.use(morgan('dev')) // for logging http request to console
 app.use(errorMiddleware);
 routes(app);
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const clientDistPath = path.resolve(__dirname, "client", "dist");
+app.use(express.static(clientDistPath));
+
+const serveIndexFile = (req, res) => {
+    res.sendFile(path.join(clientDistPath, "index.html"));
+};
+endpoints.forEach(endpoint => {
+    app.get(endpoint, serveIndexFile);
+});
+
 
 io.use((socket, next) => {
     const token = socket.handshake.headers.authorization.split(' ')[1];
