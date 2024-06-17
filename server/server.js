@@ -8,7 +8,7 @@ import routes from './src/Routes/index.js';
 import dotenv from "dotenv"
 import morgan from "morgan"
 import { decodeJwt, getSockets } from './src/Helpers/index.js';
-import { corsOptions, endpoints } from "./src/Constants/config.js"
+import { corsOptions } from "./src/Constants/config.js"
 import { CHAT_JOINED, CHAT_LEAVED, NEW_MESSAGE, ONLINE_USERS, START_TYPING, STOP_TYPING } from './src/Constants/events.js';
 import { Message } from './src/Models/messageModel.js';
 import { v4 as uuid } from "uuid"
