@@ -54,6 +54,7 @@ function UserChat({ _id, members }: Chat) {
         avatarProps={{
           size: "lg",
           src: `${userData?.data.avatar?.url}`,
+          showFallback: true,
         }}
       />
       <div className="flex flex-col items-center space-y-4">

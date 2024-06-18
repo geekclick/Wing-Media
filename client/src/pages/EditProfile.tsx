@@ -84,6 +84,7 @@ function EditProfile() {
             }
             avatarProps={{
               src: `${image.preview ? image.preview : userData.avatar?.url}`,
+              showFallback: true,
             }}
             classNames={{
               name: "font-bold text-base",

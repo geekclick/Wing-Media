@@ -63,7 +63,7 @@ function Notification() {
                   <CardBody>
                     <div className="flex justify-between items-center">
                       <div className="flex justify-start items-center space-x-2">
-                        <Avatar src={not.sender.avatar} />
+                        <Avatar src={not.sender.avatar} showFallback />
                         <div>
                           <h1 className="font-bold text-sm">
                             {not.sender.name}

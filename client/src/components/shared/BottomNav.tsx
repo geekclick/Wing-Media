@@ -75,7 +75,7 @@ export default function BottomNav() {
             aria-current="page"
             className="flex flex-col justify-center items-center"
           >
-            <Avatar src={user?.avatar?.url} size="sm" />
+            <Avatar src={user?.avatar?.url} size="sm" showFallback />
             <p className="text-xs font-semibold  text-center">Me</p>
           </Link>
         </NavbarItem>

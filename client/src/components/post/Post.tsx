@@ -81,6 +81,7 @@ export default function PostComponent({ ...post }: Post) {
                 color="primary"
                 size="md"
                 src={postUser?.avatar?.url}
+                showFallback
               />
               <div className="flex flex-col gap-1 items-start justify-center">
                 <h4 className="text-small font-semibold leading-none text-default-600">

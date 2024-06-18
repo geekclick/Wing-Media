@@ -115,7 +115,7 @@ function DesktopSidebar() {
               aria-current="page"
               className="flex flex-col justify-center items-center"
             >
-              <Avatar src={user?.avatar?.url} size="sm" />
+              <Avatar src={user?.avatar?.url} size="sm" showFallback/>
               <p className="text-xs font-semibold lg:hidden">Me</p>
             </Link>
           </Button>

@@ -34,6 +34,7 @@ function SearchResult({ user }: SearchResultProps) {
           description={user.username}
           avatarProps={{
             src: `${user.avatar?.url}`,
+            showFallback: true,
           }}
         />
       </Link>

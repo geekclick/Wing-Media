@@ -131,7 +131,7 @@ function CommentModal({ children, post }: CommentModalProps) {
                 </ModalBody>
                 <ModalFooter className="fixed bottom-0 right-0 w-full p-0">
                   <div className="flex justify-around items-center p-4 m-0 bg-white w-full">
-                    <Avatar src={user.avatar?.url} />
+                    <Avatar src={user.avatar?.url} showFallback />
                     <Input
                       placeholder="Add a comment"
                       className="w-[250px]"

@@ -116,6 +116,7 @@ export default function NewPostModal({ children }: ChildProps) {
                         description="🌍Public"
                         avatarProps={{
                           src: `${user.avatar?.url}`,
+                          showFallback: true,
                         }}
                       />
                     </div>

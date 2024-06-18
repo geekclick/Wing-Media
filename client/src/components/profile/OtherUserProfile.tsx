@@ -72,6 +72,7 @@ function OtherUserProfile() {
               <Avatar
                 src={user?.avatar?.url}
                 className="w-44 h-44 text-large"
+                showFallback
               />
             </div>
           )}
@@ -82,6 +83,7 @@ function OtherUserProfile() {
               onClick={() => setZoom(true)}
               src={user?.avatar?.url}
               className="w-20 h-20 text-large"
+              showFallback
             />
             <div className="flex flex-col space-y-5">
               <div className="flex justify-center items-center space-x-3">

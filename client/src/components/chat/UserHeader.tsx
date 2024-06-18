@@ -77,7 +77,7 @@ function UserHeader({ chatId, otherUser }: UserHeaderProps) {
             shape="circle"
             placement="bottom-right"
           >
-            <Avatar radius="full" src={otherUser?.avatar?.url} />
+            <Avatar radius="full" src={otherUser?.avatar?.url} showFallback />
           </Badge>
         </Link>
         <div className="flex flex-col justify-center items-start px-4">

@@ -45,7 +45,11 @@ function UserProfile({ user, posts, isLoading }: UserProfileProps) {
           onClick={() => setZoom(false)}
           className="w-full h-[100vh] absolute z-50 bg-black/80 flex justify-center pt-40"
         >
-          <Avatar src={user?.avatar?.url} className="w-44 h-44 text-large" />
+          <Avatar
+            src={user?.avatar?.url}
+            className="w-44 h-44 text-large"
+            showFallback
+          />
         </div>
       )}
 
@@ -55,6 +59,7 @@ function UserProfile({ user, posts, isLoading }: UserProfileProps) {
           onClick={() => setZoom(true)}
           src={user?.avatar?.url}
           className="w-20 h-20 text-large"
+          showFallback
         />
         <div className="flex flex-col space-y-5">
           <div className="flex justify-center items-center space-x-3">

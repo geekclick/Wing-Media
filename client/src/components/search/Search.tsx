@@ -86,6 +86,7 @@ export default function Search() {
                   className="flex-shrink-0"
                   size="sm"
                   src={item.avatar?.url}
+                  showFallback
                 />
                 <div className="flex flex-col">
                   <span className="text-small ">{item?.name}</span>
