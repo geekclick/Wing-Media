@@ -4,7 +4,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Progress,
   User,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -23,16 +22,19 @@ function StoryPage() {
   const { id } = useParams();
   const { user } = useSelector((state: StoreState) => state.userSlice);
   const { stories } = useSelector((state: StoreState) => state.storySlice);
-  // const { captionStyle } = useSelector(
-  //   (state: StoreState) => state.commonSlice
-  // );
   const thisStory = stories.find((story) => story?._id === id);
   const { isLoading, data } = useGetUserQuery(thisStory?.user_id);
   const [deleteStory] = useAsyncMutation(useDeleteStoryMutation);
 
   const [value, setValue] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const navigate = useNavigate();
-  if (value >= 110) navigate("/");
+
+  useEffect(() => {
+    if (value >= 100) {
+      navigate("/");
+    }
+  }, [value, navigate]);
 
   const handleDelete = async () => {
     try {
@@ -44,11 +46,27 @@ function StoryPage() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setValue((v) => (v >= 110 ? 100 : v + 1));
-    }, 80);
-    return () => clearInterval(interval);
+    const handleTouchStart = () => setIsPaused(true);
+    const handleTouchEnd = () => setIsPaused(false);
+
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        setValue((v) => v + 1);
+      }
+    }, 30);
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -60,15 +78,14 @@ function StoryPage() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
       >
-        {/* header start*/}
-        <Progress
-          aria-label="Loading..."
-          value={value}
-          className="absolute z-20"
-          radius="none"
-          size="sm"
+        {/* header start */}
+        <motion.div
+          className="w-full h-1 bg-primary"
+          initial={{ width: 0 }}
+          animate={{ width: `${value}%` }}
+          transition={{ ease: "easeOut", duration: 0.1 }}
         />
-        <div className="p-3 flex justify-between items-center  bg-black/20 fixed text-white z-20 w-full lg:w-[600px] lg:static lg:bg-white lg:text-black">
+        <div className="p-3 flex justify-between items-center bg-black/20 fixed text-white z-20 w-full lg:w-[600px] lg:static lg:bg-white lg:text-black">
           <div className="flex justify-center items-center space-x-4">
             <Link to={"/"} className="lg:hidden">
               <BiX className="text-3xl" />
@@ -114,7 +131,7 @@ function StoryPage() {
             alt="jj"
           />
           <h1
-            className="text-2xl z-40font-bold w-[80vw] lg:w-fit text-center"
+            className="text-2xl z-40 font-bold w-[80vw] lg:w-fit text-center"
             style={{
               position: "absolute",
               top: "30rem",
@@ -123,22 +140,6 @@ function StoryPage() {
             {thisStory?.caption}
           </h1>
         </div>
-
-        {/* {user._id != thisStory?.user_id && (
-        <div className="flex justify-around items-center text-white m-0 bg-black/50 fixed bottom-0 p-2 w-full">
-          <Avatar src={user?.avatar?.url} />
-          <Input
-            placeholder="Add a comment"
-            className="w-[250px]"
-            isClearable
-            variant="underlined"
-            classNames={{ input: "text-white" }}
-            color="primary"
-            startContent={user?.username}
-          />
-          <BiSend className="text-2xl text-white" />
-        </div>
-      )} */}
       </motion.section>
     </>
   );
