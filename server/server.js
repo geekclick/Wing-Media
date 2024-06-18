@@ -60,8 +60,8 @@ io.on("connection", (socket) => {
             content: message,
             _id: uuid(),
             sender: {
-                _id: user._id,
-                name: user.name,
+                _id: user?._id,
+                name: user?.name,
             },
             chat: chatId,
             createdAt: new Date().toISOString(),
@@ -91,8 +91,8 @@ io.on("connection", (socket) => {
         const [user1, user2] = await Promise.all([User.findById(userA), User.findById(userB)]);
         try {
             if (user) {
-                const newFollowing = user1.following.filter((uid) => uid != userB)
-                const newFollowers = user2.followers.filter((uid) => uid != userA)
+                const newFollowing = user1?.following.filter((uid) => uid != userB)
+                const newFollowers = user2?.followers.filter((uid) => uid != userA)
                 user1.following = newFollowing
                 user2.followers = newFollowers
                 await user1.save()

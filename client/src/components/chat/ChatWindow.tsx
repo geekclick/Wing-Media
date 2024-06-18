@@ -30,7 +30,6 @@ const ChatWindow = () => {
   const dispatch = useDispatch();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [message, setMessage] = useState<string>("");
-
   const { chats, messageCount } = useSelector(
     (state: StoreState) => state.chatSlice
   );
@@ -119,6 +118,7 @@ const ChatWindow = () => {
               onKeyDown={handleKeyPress}
               className="flex-grow border border-gray-300 p-2 rounded-l-lg"
               placeholder="Type a message..."
+              autoFocus
             />
             <button
               onClick={sendMessage}

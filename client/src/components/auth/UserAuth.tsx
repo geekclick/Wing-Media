@@ -22,10 +22,12 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { SERVER_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
+import { useInitializeSocket } from "../../socket";
 
 export default function UserAuth() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const connectSocket = useInitializeSocket();
   const {
     register,
     reset,
@@ -47,13 +49,13 @@ export default function UserAuth() {
     try {
       const response = await axios.post(
         `${SERVER_URL}/api/auth/login`,
-        formData,
-        { withCredentials: true }
+        formData
       );
       if (response) {
         localStorage.setItem("token", response.data.data.token);
         dispatch(setIsLoggedIn(true));
         navigate("/");
+        connectSocket();
         toast.success("Login Successful!");
         reset();
       }
@@ -67,14 +69,14 @@ export default function UserAuth() {
     try {
       const response = await axios.post(
         `${SERVER_URL}/api/auth/register`,
-        formData,
-        { withCredentials: true }
+        formData
       );
       if (response) {
         localStorage.setItem("token", response.data.data.token);
         dispatch(setIsLoggedIn(true));
         toast.success("Register Successful!");
         navigate("/profile/edit");
+        connectSocket();
         reset();
       }
     } catch (error: any) {

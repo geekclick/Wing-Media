@@ -3,7 +3,7 @@ import { useEffect, useCallback } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 import axios from "axios";
-import { useSocket } from "../socket";
+import { useInitializeSocket, useSocket } from "../socket";
 
 // store
 import { useDispatch, useSelector } from "react-redux";
@@ -50,6 +50,7 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
       (state: StoreState) => state.chatSlice
     );
     const socket = useSocket();
+    const connectSocket = useInitializeSocket();
     const profile = useGetProfileQuery();
     const posts = useGetPostsQuery();
     const notifications = useGetNotificationsQuery();
@@ -155,6 +156,7 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
       if (isLoggedIn) {
         refetchData();
         fetchData();
+        connectSocket();
 
         socket?.on(NEW_REQUEST, handleNewRequest);
         socket?.on(ALERT, handleAlert);
