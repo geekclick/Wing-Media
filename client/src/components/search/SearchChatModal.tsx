@@ -8,7 +8,7 @@ import {
   Input,
   User,
   Button,
-  Spinner,
+  Skeleton,
 } from "@nextui-org/react";
 import { ChildProps, User as UserInterface } from "../../interfaces/common";
 import { LuSearch } from "react-icons/lu";
@@ -48,7 +48,7 @@ function SearchChatModal({ children }: ChildProps) {
     }, [query]) || friends?.data;
 
   return isLoading ? (
-    <Spinner />
+    <Skeleton className="w-6 h-6 rounded-md" isLoaded={!isLoading} />
   ) : (
     <div>
       <button onClick={onOpen}>{children}</button>
