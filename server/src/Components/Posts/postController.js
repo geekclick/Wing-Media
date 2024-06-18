@@ -30,9 +30,9 @@ class PostController {
     getPosts = TryCatch(async (req, res, next) => {
         const posts = await postServices.getAllPosts({ _id: req.user })
         if (posts) {
-            createResponse(res, 200, "Got posts successfully", posts, 200)
+            return createResponse(res, 200, "Got posts successfully", posts, 200)
         } else {
-            createError(res, 404, "Posts not found")
+            return createError(res, 404, "Posts not found")
         }
     })
 
@@ -44,9 +44,9 @@ class PostController {
             post.likes.push(req.user)
             await post.save()
             io.emit("REFETCH_POSTS")
-            createResponse(res, 204, "Post liked!", 204)
+            return createResponse(res, 200, "Post liked!", 200)
         } else {
-            createError(res, 404, "Post not found")
+            return createError(res, 404, "Post not found")
         }
     })
 
@@ -59,9 +59,9 @@ class PostController {
             post.likes = newLikes
             await post.save()
             io.emit("REFETCH_POSTS")
-            createResponse(res, 204, "Post unliked!", 204)
+            return createResponse(res, 200, "Post unliked!", 200)
         } else {
-            createError(res, 404, "Post not found")
+            return createError(res, 404, "Post not found")
         }
     })
 
@@ -81,9 +81,9 @@ class PostController {
             user.posts = newUserPosts
             user.save()
             await Post.findByIdAndDelete(id)
-            createResponse(res, 204, "Post deleted!", 204);
+            return createResponse(res, 200, "Post deleted!", 200);
         } else {
-            createError(res, 404, "Post not found.");
+            return createError(res, 404, "Post not found.");
         }
     })
 
@@ -94,9 +94,9 @@ class PostController {
         if (post) {
             post.comments.push(req.body)
             await post.save()
-            createResponse(res, 201, "Comment added", { ...req.body }, 201);
+            return createResponse(res, 201, "Comment added", { ...req.body }, 201);
         } else {
-            createError(res, 404, "Post not found.");
+            return createError(res, 404, "Post not found.");
         }
     })
 
@@ -108,9 +108,9 @@ class PostController {
             const newComments = post.comments.filter((c) => c._id != comment_id)
             post.comments = newComments
             await post.save()
-            createResponse(res, 204, "Comment Deleted", 204);
+            return createResponse(res, 200, "Comment Deleted", 200);
         } else {
-            createError(res, 404, "Post not found.");
+            return createError(res, 404, "Post not found.");
         }
     })
 }

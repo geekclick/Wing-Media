@@ -7,9 +7,9 @@ class AuthController {
     register = TryCatch(async (req, res, next) => {
         const user = await authServices.addNewUser(req, res);
         if (user) {
-            createResponse(res, 201, "New user created successfully!", user, 201);
+            return createResponse(res, 201, "New user created successfully!", user, 201);
         } else {
-            createError(res, 404, "Unable to create new user!");
+            return createError(res, 404, "Unable to create new user!");
         }
     })
 
@@ -17,14 +17,14 @@ class AuthController {
         const { email, password } = req.body;
         const user = await authServices.validateUser(email, password);
         if (user) {
-            createResponse(res, 200, "Login successful!", user, 200);
+            return createResponse(res, 200, "Login successful!", user, 200);
         } else {
-            createError(res, 401, "Invalid credentials!");
+            return createError(res, 401, "Invalid credentials!");
         }
     })
 
     logout = TryCatch(async (req, res, next) => {
-        createResponse(res, 204, "Log out successfull", 204)
+        return createResponse(res, 200, "Log out successfull", 200)
     })
 
     isAuthorized = TryCatch(async (req, res, next) => {

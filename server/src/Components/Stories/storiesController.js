@@ -17,9 +17,9 @@ class StoryController {
         const story = await new Story({ story: { publicId: storyUrl.public_id, url: storyUrl.secure_url }, user_id: req.user, ...req.body })
         if (story) {
             await story.save()
-            createResponse(res, 201, "Story added", story, 201)
+            return createResponse(res, 201, "Story added", story, 201)
         } else
-            createError(res, 404, "unable to add story")
+            return createError(res, 404, "unable to add story")
     })
 
     deleteStory = TryCatch(async (req, res, next) => {
@@ -28,9 +28,9 @@ class StoryController {
         if (story) {
             await deleteFileFromCloudinary(story.story.publicId)
             await Story.findByIdAndDelete(id)
-            createResponse(res, 204, "Story removed", 204)
+            return createResponse(res, 200, "Story removed", 200)
         } else
-            createError(res, 404, "Story not found")
+            return createError(res, 404, "Story not found")
     })
 }
 

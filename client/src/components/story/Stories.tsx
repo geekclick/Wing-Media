@@ -17,6 +17,7 @@ function Stories() {
   const dispatch = useDispatch();
   const user = useSelector((state: StoreState) => state.userSlice.user);
   const stories = useSelector((state: StoreState) => state.storySlice.stories);
+  const { isLoggedIn } = useSelector((state: StoreState) => state.authSlice);
 
   const { data: storyData, refetch } = useGetStoryQuery();
 
@@ -44,8 +45,10 @@ function Stories() {
   };
 
   useEffect(() => {
-    const intervalId = setInterval(checkValidStories, 5 * 60 * 1000); // Check every 5 minutes
-    return () => clearInterval(intervalId);
+    if (isLoggedIn) {
+      const intervalId = setInterval(checkValidStories, 5 * 60 * 1000); // Check every 5 minutes
+      return () => clearInterval(intervalId);
+    }
   }, [stories, deleteStory, refetch]);
 
   const myStory = useMemo(

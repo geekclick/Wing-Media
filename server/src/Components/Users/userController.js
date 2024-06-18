@@ -92,7 +92,7 @@ class UserController {
             }));
             return createResponse(res, 200, "New requests", allRequests, 200)
         } else
-            return createResponse(res, 204, "No new requests!", 204)
+            return createResponse(res, 200, "No new requests!", 200)
     })
 
     getFriends = TryCatch(async (req, res, next) => {
@@ -148,7 +148,7 @@ class UserController {
         console.log(existingRequest)
         const isFollowed = sender.following.some((id) => id == receiver._id)
         if (isFollowed) {
-            return createResponse(res, 204, "Already Followed", 204)
+            return createResponse(res, 200, "Already Followed", 200)
         }
 
         const isOtherUserAlreadyFollowing = sender.followers.some((id) => id == userId)
@@ -174,7 +174,7 @@ class UserController {
             await Request.deleteOne({ receiver: req.user })
 
             emitEvent(req, REFETCH_CHATS, members);
-            return createResponse(res, 204, "Followed!", 204)
+            return createResponse(res, 200, "Followed!", 200)
         }
 
         if (!existingRequest) {
@@ -189,9 +189,9 @@ class UserController {
 
             emitEvent(req, NEW_REQUEST, [userId], null);
 
-            return createResponse(res, 204, "Request Sent!", 204);
+            return createResponse(res, 200, "Request Sent!", 200);
         } else {
-            return createResponse(res, 204, "Request Already Sent!", 204);
+            return createResponse(res, 200, "Request Already Sent!", 200);
         }
     });
 
@@ -208,7 +208,7 @@ class UserController {
 
         if (!accept) {
             await request.deleteOne();
-            return createResponse(res, 204, "Request rejected!", 204);
+            return createResponse(res, 200, "Request rejected!", 200);
         } else {
             const members = [request.sender._id, request.receiver._id];
 
@@ -250,7 +250,7 @@ class UserController {
 
         await Message.deleteMany({ chat: { $in: chatIds } });
 
-        createResponse(res, 200, "User account deleted successfully", null, 200)
+        return createResponse(res, 200, "User account deleted successfully", null, 200)
     });
 }
 
