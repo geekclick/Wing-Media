@@ -1,4 +1,5 @@
 import {
+  AvatarIcon,
   Button,
   Input,
   User as NextUIUser,
@@ -85,6 +86,8 @@ function EditProfile() {
             avatarProps={{
               src: `${image.preview ? image.preview : userData.avatar?.url}`,
               showFallback: true,
+              fallback: <AvatarIcon />,
+              classNames: { fallback: "w-full" },
             }}
             classNames={{
               name: "font-bold text-base",

@@ -1,4 +1,8 @@
-import { Badge, User as NextUiUser } from "@nextui-org/react";
+import {
+  AvatarIcon,
+  Badge,
+  User as NextUiUser,
+} from "@nextui-org/react";
 import { Chat } from "../../interfaces/common";
 import { useEffect, useMemo } from "react";
 import { useGetMessagesQuery, useGetUserQuery } from "../../store/api/api";
@@ -55,6 +59,8 @@ function UserChat({ _id, members }: Chat) {
           size: "lg",
           src: `${userData?.data.avatar?.url}`,
           showFallback: true,
+          fallback: <AvatarIcon />,
+          classNames: { fallback: "w-full" },
         }}
       />
       <div className="flex flex-col items-center space-y-4">

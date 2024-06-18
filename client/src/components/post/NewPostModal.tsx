@@ -11,6 +11,7 @@ import {
   Chip,
   Spinner,
   useDisclosure,
+  AvatarIcon,
 } from "@nextui-org/react";
 import { useFileHandler } from "6pp";
 import { ChildProps } from "../../interfaces/common";
@@ -117,6 +118,8 @@ export default function NewPostModal({ children }: ChildProps) {
                         avatarProps={{
                           src: `${user.avatar?.url}`,
                           showFallback: true,
+                          fallback: <AvatarIcon />,
+                          classNames: { fallback: "w-full" },
                         }}
                       />
                     </div>

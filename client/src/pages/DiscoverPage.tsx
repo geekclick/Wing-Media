@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import BottomNav from "../components/shared/BottomNav";
 import Search from "../components/search/Search";
 import { StoreState } from "../interfaces/storeInterface";
-import { User as NextUIUser } from "@nextui-org/react";
+import { AvatarIcon, User as NextUIUser } from "@nextui-org/react";
 import { RiUserAddLine } from "react-icons/ri";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
@@ -35,6 +35,8 @@ function SearchResult({ user }: SearchResultProps) {
           avatarProps={{
             src: `${user.avatar?.url}`,
             showFallback: true,
+            fallback: <AvatarIcon />,
+            classNames: { fallback: "w-full" },
           }}
         />
       </Link>
