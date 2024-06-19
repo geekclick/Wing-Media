@@ -1,7 +1,7 @@
 import { Avatar, Button } from "@nextui-org/react";
 import PostComponent from "../post/Post";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Post, User } from "../../interfaces/common";
 import { LuLogOut } from "react-icons/lu";
 import axios from "axios";
@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import Loader from "../shared/Loader";
 import { SERVER_URL } from "../../constants";
+import { useSocket } from "../../socket";
 
 interface UserProfileProps {
   user: User;
@@ -19,6 +20,8 @@ interface UserProfileProps {
 
 function UserProfile({ user, posts, isLoading }: UserProfileProps) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const socket = useSocket();
   const [zoom, setZoom] = useState(false);
   const handleLogout = async () => {
     try {
@@ -29,6 +32,8 @@ function UserProfile({ user, posts, isLoading }: UserProfileProps) {
         localStorage.removeItem("token");
         dispatch(setIsLoggedIn(false));
         toast.success("Log out Successful!");
+        navigate("/");
+        socket?.disconnect();
       }
     } catch (error: any) {
       console.log(error.response.data.message);

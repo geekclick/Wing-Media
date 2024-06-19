@@ -113,7 +113,7 @@ function NewStoryPage() {
               </h1>
             </Draggable>
             <div className="flex justify-around items-center text-white m-0 bg-black/50 fixed bottom-0 p-3 w-full lg:bottom-4 lg:w-[450px]">
-              <Avatar src={user?.avatar?.url} showFallback/>
+              <Avatar src={user?.avatar?.url} showFallback />
               <Input
                 placeholder="Add a caption"
                 className="w-[250px] lg:w-[300px]"

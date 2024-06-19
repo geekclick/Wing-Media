@@ -145,14 +145,12 @@ class UserController {
         });
 
 
-        console.log(existingRequest)
         const isFollowed = sender.following.some((id) => id == receiver._id)
         if (isFollowed) {
             return createResponse(res, 200, "Already Followed", 200)
         }
 
         const isOtherUserAlreadyFollowing = sender.followers.some((id) => id == userId)
-        console.log(isOtherUserAlreadyFollowing)
         if (isOtherUserAlreadyFollowing) {
             const members = [sender._id, receiver._id];
 

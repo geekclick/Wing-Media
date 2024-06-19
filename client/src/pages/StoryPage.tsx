@@ -1,4 +1,5 @@
 import {
+  AvatarIcon,
   Button,
   Dropdown,
   DropdownItem,
@@ -96,6 +97,9 @@ function StoryPage() {
                 description={data?.data?.username}
                 avatarProps={{
                   src: `${data?.data?.avatar?.url}`,
+                  showFallback: true,
+                  fallback: <AvatarIcon />,
+                  classNames: { fallback: "w-full" },
                 }}
                 classNames={{
                   name: "text-base font-semibold",

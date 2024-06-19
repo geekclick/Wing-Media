@@ -9,6 +9,7 @@ import {
   User,
   Button,
   Skeleton,
+  AvatarIcon,
 } from "@nextui-org/react";
 import { ChildProps, User as UserInterface } from "../../interfaces/common";
 import { LuSearch } from "react-icons/lu";
@@ -88,6 +89,9 @@ function SearchChatModal({ children }: ChildProps) {
                         description={u?.username}
                         avatarProps={{
                           src: `${u?.avatar?.url}`,
+                          showFallback: true,
+                          fallback: <AvatarIcon />,
+                          classNames: { fallback: "w-full" },
                         }}
                       />
                     </div>

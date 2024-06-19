@@ -13,7 +13,7 @@ const TryCatch = (passedFunc) => async (req, res, next) => {
         if (!(error instanceof Error)) {
             const newError = new Error("Unknown error");
             newError.status = 500;
-            next(newError);
+            return res.status(401).json({ message: error.message })
         } else {
             console.log(error)
         }

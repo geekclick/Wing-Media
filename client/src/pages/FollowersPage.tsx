@@ -2,7 +2,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
 import { useGetUserQuery } from "../store/api/api";
-import { Spinner, User as NextUIUser } from "@nextui-org/react";
+import { Spinner, User as NextUIUser, AvatarIcon } from "@nextui-org/react";
 import DesktopSidebar from "../components/shared/DesktopSidebar";
 
 interface FollowerUserProps {
@@ -20,6 +20,9 @@ function FollowerUser({ userId }: FollowerUserProps) {
       description={data?.data?.username}
       avatarProps={{
         src: `${data?.data?.avatar?.url}`,
+        showFallback: true,
+        fallback: <AvatarIcon />,
+        classNames: { fallback: "w-full" },
       }}
     />
   );

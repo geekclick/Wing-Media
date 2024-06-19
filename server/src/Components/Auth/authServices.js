@@ -5,22 +5,23 @@ class AuthService {
     async validateUser(email, password) {
         const user = await User.findOne({ email: email });
         if (user) {
-            const isAuthorizedUser = await user.authenticateUser(password)
+            const isAuthorizedUser = await user.authenticateUser(password);
             if (isAuthorizedUser) return user.toAuthJSON()
-        } else return null
+            else return { message: "Password is incorrect. Please try again." }
+        } else return { message: "Email is not registered" }
     }
 
     async addNewUser(req, res) {
         return new Promise(async (resolve, reject) => {
             try {
                 let { username, email } = req.body
-                email = String(email).toLowerCase()
+                // email = String(email).toLowerCase()
                 const user = await User.findOne({ email: email })
                 const usernameExist = await User.findOne({ username: username })
                 if (user) {
-                    reject({ message: "That email is already in use!" })
+                    reject({ message: "That email is already registered" })
                 } if (usernameExist) {
-                    reject({ message: "That username is already in use!" })
+                    reject({ message: "Username is taken, Try another!" })
                 } else {
                     const new_user = new User(req.body)
                     await new_user.save()

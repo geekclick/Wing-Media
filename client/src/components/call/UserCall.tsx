@@ -1,4 +1,4 @@
-import { User } from "@nextui-org/react";
+import { AvatarIcon, User } from "@nextui-org/react";
 import { MdOutlineCall } from "react-icons/md";
 
 function UserCall() {
@@ -13,6 +13,9 @@ function UserCall() {
         avatarProps={{
           size: "md",
           src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+          showFallback: true,
+          fallback: <AvatarIcon />,
+          classNames: { fallback: "w-full" },
         }}
       />
       <div className="flex flex-col items-center justify-center">

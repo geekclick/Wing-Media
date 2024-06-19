@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsLoggedIn } from "../../store/reducers/authSlice";
 import axios from "axios";
 import { SERVER_URL } from "../../constants";
+import { useNavigate } from "react-router-dom";
 
 function AlertModal({ children }: ChildProps) {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ function AlertModal({ children }: ChildProps) {
   const [deleteProfile] = useDeleteProfileMutation();
 
   const handleDeleteProfile = async () => {
+    const navigate = useNavigate();
     try {
       if (user?._id) {
         await deleteProfile({ data: user?._id });
@@ -29,6 +31,7 @@ function AlertModal({ children }: ChildProps) {
         });
         if (response) {
           dispatch(setIsLoggedIn(false));
+          navigate("/");
         }
       }
     } catch (error) {

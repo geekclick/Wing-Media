@@ -10,6 +10,7 @@ import {
   Modal,
   ModalContent,
   ModalBody,
+  Spinner,
 } from "@nextui-org/react";
 import { CgMail } from "react-icons/cg";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
@@ -35,6 +36,7 @@ export default function UserAuth() {
     formState: { errors },
   } = useForm<User>();
 
+  const [loader, setLoader] = useState(false);
   const [selected, setSelected] = useState<string>("login");
   const login = useSelector((state: StoreState) => state.authSlice.isLoggedIn);
   const [isVisible, setIsVisible] = useState(false);
@@ -43,9 +45,9 @@ export default function UserAuth() {
   const handleSelectionChange = (key: string | number) => {
     setSelected(String(key));
   };
-
   const handleLogin: SubmitHandler<User> = async (formData, e) => {
     e?.preventDefault();
+    setLoader(true);
     try {
       const response = await axios.post(
         `${SERVER_URL}/api/auth/login`,
@@ -60,12 +62,15 @@ export default function UserAuth() {
         reset();
       }
     } catch (error: any) {
-      console.log(error.response);
-      toast.error(error.response);
+      console.log(error);
+      toast.error(error.response.data.message);
+    } finally {
+      setLoader(false);
     }
   };
   const handleRegister: SubmitHandler<User> = async (formData, e) => {
     e?.preventDefault();
+    setLoader(true);
     try {
       const response = await axios.post(
         `${SERVER_URL}/api/auth/register`,
@@ -75,13 +80,15 @@ export default function UserAuth() {
         localStorage.setItem("token", response.data.data.token);
         dispatch(setIsLoggedIn(true));
         toast.success("Register Successful!");
-        navigate("/profile/edit");
+        navigate("/");
         connectSocket();
         reset();
       }
     } catch (error: any) {
       console.log(error.response.data.message);
       toast.error(error.response.data.message);
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -162,8 +169,9 @@ export default function UserAuth() {
                               color="primary"
                               className="text-white"
                               type="submit"
+                              isDisabled={loader}
                             >
-                              Login
+                              {loader ? <Spinner color="default" /> : "Login"}
                             </Button>
                           </div>
                         </form>
@@ -235,8 +243,9 @@ export default function UserAuth() {
                               color="primary"
                               className="text-white"
                               type="submit"
+                              isDisabled={loader}
                             >
-                              Sign up
+                              {loader ? <Spinner color="default" /> : "Sign up"}
                             </Button>
                           </div>
                         </form>

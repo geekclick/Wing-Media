@@ -9,6 +9,7 @@ import {
   Avatar,
   Input,
   Spinner,
+  AvatarIcon,
 } from "@nextui-org/react";
 import { ReactElement, useState } from "react";
 import { BiSend } from "react-icons/bi";
@@ -95,6 +96,9 @@ function CommentModal({ children, post }: CommentModalProps) {
                                 name={c?.user?.username}
                                 avatarProps={{
                                   src: `${c?.user?.avatar?.url}`,
+                                  showFallback: true,
+                                  fallback: <AvatarIcon />,
+                                  classNames: { fallback: "w-full" },
                                 }}
                                 classNames={{
                                   name: "relative bottom-1 text-xs",
