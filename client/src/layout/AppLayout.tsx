@@ -39,6 +39,7 @@ import {
   NEW_REQUEST,
   ONLINE_USERS,
   REFETCH_POSTS,
+  REFETCH_STORIES,
 } from "../constants/events";
 import { SERVER_URL } from "../constants";
 
@@ -136,6 +137,11 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
       dispatch(setPostList(posts.data?.data));
     }, [posts, dispatch]);
 
+    const handleRefetchStories = useCallback(async () => {
+      await stories.refetch();
+      dispatch(setStories(stories.data?.data));
+    }, [stories, dispatch]);
+
     const setUserOnline = (data: string[]) => {
       dispatch(setOnlineUsers(data));
     };
@@ -163,6 +169,7 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
         socket?.on(NEW_MESSAGE, handleMessage);
         socket?.on(NEW_MESSAGE_ALERT, handleMessageAlert);
         socket?.on(REFETCH_POSTS, handleRefetchPosts);
+        socket?.on(REFETCH_STORIES, handleRefetchStories);
         socket?.on(ONLINE_USERS, setUserOnline);
 
         return () => {
@@ -171,6 +178,7 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
           socket?.off(NEW_REQUEST, handleNewRequest);
           socket?.off(ALERT, handleAlert);
           socket?.off(REFETCH_POSTS, handleRefetchPosts);
+          socket?.off(REFETCH_STORIES, handleRefetchStories);
           socket?.off(ONLINE_USERS, setUserOnline);
         };
       }

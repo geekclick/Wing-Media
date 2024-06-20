@@ -92,7 +92,7 @@ class UserController {
             }));
             return createResponse(res, 200, "New requests", allRequests, 200)
         } else
-            return createResponse(res, 200, "No new requests!", 200)
+            return createResponse(res, 200, "No new requests!", [], 200)
     })
 
     getFriends = TryCatch(async (req, res, next) => {

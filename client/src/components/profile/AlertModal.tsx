@@ -17,12 +17,12 @@ import { SERVER_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 
 function AlertModal({ children }: ChildProps) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state: StoreState) => state.userSlice);
   const [deleteProfile] = useDeleteProfileMutation();
 
   const handleDeleteProfile = async () => {
-    const navigate = useNavigate();
     try {
       if (user?._id) {
         await deleteProfile({ data: user?._id });
@@ -31,6 +31,7 @@ function AlertModal({ children }: ChildProps) {
         });
         if (response) {
           dispatch(setIsLoggedIn(false));
+          localStorage.removeItem("token");
           navigate("/");
         }
       }

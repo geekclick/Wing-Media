@@ -26,7 +26,7 @@ function Notification() {
   const [manageRequest] = useAsyncMutation(useManageRequestMutation);
   const fetchNotifications = async () => {
     await refetch();
-    dispatch(setNotification(data?.data));
+    dispatch(setNotification(data?.data.data));
   };
 
   useEffect(() => {

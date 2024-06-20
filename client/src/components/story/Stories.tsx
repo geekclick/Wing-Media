@@ -40,7 +40,6 @@ function Stories() {
         await deleteStory({ data: story?._id });
       }
     }
-
     refetch();
   };
 

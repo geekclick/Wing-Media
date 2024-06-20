@@ -1,3 +1,4 @@
+import { REFETCH_POSTS } from "../../Constants/events.js";
 import { createError, createResponse } from "../../Helpers/index.js"
 import { TryCatch } from "../../Middlewares/errorMiddleware.js";
 import Post from "../../Models/postModel.js"
@@ -43,7 +44,7 @@ class PostController {
         if (post) {
             post.likes.push(req.user)
             await post.save()
-            io.emit("REFETCH_POSTS")
+            io.emit(REFETCH_POSTS)
             return createResponse(res, 200, "Post liked!", 200)
         } else {
             return createError(res, 404, "Post not found")
@@ -58,7 +59,7 @@ class PostController {
             const newLikes = post.likes.filter((user) => user != req.user)
             post.likes = newLikes
             await post.save()
-            io.emit("REFETCH_POSTS")
+            io.emit(REFETCH_POSTS)
             return createResponse(res, 200, "Post unliked!", 200)
         } else {
             return createError(res, 404, "Post not found")
