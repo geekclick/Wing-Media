@@ -16,38 +16,15 @@ import { StoreState } from "./interfaces/storeInterface";
 import OtherUserProfile from "./components/profile/OtherUserProfile";
 import FollowingPage from "./pages/FollowingPage";
 import ViewPost from "./components/post/ViewPost";
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { AiFillDingtalkSquare } from "react-icons/ai";
+import { AnimatePresence } from "framer-motion";
 import FollowersPage from "./pages/FollowersPage";
 import StoryPage from "./pages/StoryPage";
 import NewStoryPage from "./pages/NewStoryPage";
 
 function App() {
   const { isLoading } = useSelector((state: StoreState) => state.commonSlice);
-  const [loader, setLoader] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoader(false);
-    }, 2000);
-  }, []);
-
-  return loader ? (
-    <div className="w-full h-screen flex flex-col bg-white justify-center items-center overflow-hidden relative">
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: [1, 40] }}
-        transition={{ duration: 2, delay: 1 }}
-      >
-        <AiFillDingtalkSquare className="text-9xl" />
-      </motion.div>
-      <p className="font-bold text-inherit flex items-center text-6xl space-x-2">
-        Wing
-      </p>
-      <span className="pl-20 pt-2 font-mono">MEDIA</span>
-    </div>
-  ) : (
+  return (
     <>
       <BrowserRouter basename="/">
         {!isLoading && <UserAuth />}

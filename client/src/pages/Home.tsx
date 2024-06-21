@@ -7,8 +7,10 @@ import { RiCameraLine } from "react-icons/ri";
 import DesktopSidebar from "../components/shared/DesktopSidebar";
 import { motion } from "framer-motion";
 import Header from "../components/shared/Header";
+import HomeSkeleton from "../components/shared/HomeSkeleton";
 
 function Home() {
+  const { isLoading } = useSelector((state: StoreState) => state.commonSlice);
   const posts = useSelector((state: StoreState) => state.postSlice.posts);
   return (
     <>
@@ -21,21 +23,27 @@ function Home() {
         exit={{ opacity: 0, y: -50 }}
         transition={{ type: "tween", duration: 0.3 }}
       >
-        <Stories />
-        <div className="lg:px-10">
-          {posts.length !== 0 ? (
-            [...posts]
-              .reverse()
-              .map((post) => <PostComponent key={post?._id} {...post} />)
-          ) : (
-            <div className="h-screen absolute top-0 w-full flex flex-col justify-center items-center">
-              <RiCameraLine className="text-9xl text-gray-300" />
-              <h1 className="text-2xl text-gray-500/50 font-bold">
-                No posts to show
-              </h1>
+        {isLoading ? (
+          <HomeSkeleton />
+        ) : (
+          <>
+            <Stories />
+            <div className="lg:px-10">
+              {posts.length !== 0 ? (
+                [...posts]
+                  .reverse()
+                  .map((post) => <PostComponent key={post?._id} {...post} />)
+              ) : (
+                <div className="h-screen absolute top-0 w-full flex flex-col justify-center items-center">
+                  <RiCameraLine className="text-9xl text-gray-300" />
+                  <h1 className="text-2xl text-gray-500/50 font-bold">
+                    No posts to show
+                  </h1>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
         <div className="relative pb-16 lg:hidden">
           <BottomNav />
         </div>

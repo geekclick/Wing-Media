@@ -1,15 +1,11 @@
-import {
-  AvatarIcon,
-  Badge,
-  User as NextUiUser,
-} from "@nextui-org/react";
+import { AvatarIcon, Badge, User as NextUiUser } from "@nextui-org/react";
 import { Chat } from "../../interfaces/common";
 import { useEffect, useMemo } from "react";
 import { useGetMessagesQuery, useGetUserQuery } from "../../store/api/api";
 import { useSelector } from "react-redux";
 import { StoreState } from "../../interfaces/storeInterface";
 import { getOtherUser } from "../../helpers/helper";
-import Loader from "../shared/Loader";
+import UserChatSkeleton from "./UserChatSkeleton";
 
 function UserChat({ _id, members }: Chat) {
   const user = useSelector((state: StoreState) => state.userSlice.user);
@@ -46,7 +42,7 @@ function UserChat({ _id, members }: Chat) {
   }, [latestMessage]);
 
   return isLoading ? (
-    <Loader />
+    <UserChatSkeleton />
   ) : (
     <div className="py-3 px-4 my-6 border-black flex justify-between">
       <NextUiUser

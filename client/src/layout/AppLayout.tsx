@@ -42,10 +42,14 @@ import {
   REFETCH_STORIES,
 } from "../constants/events";
 import { SERVER_URL } from "../constants";
+import TitleScreen from "../components/shared/TitleScreen";
 
 function AppLayout(WrappedComponent: JSX.ElementType) {
   return function NewAppComponent(props: JSX.IntrinsicAttributes) {
     const dispatch = useDispatch();
+    const loader = useSelector(
+      (state: StoreState) => state.commonSlice.isLoading
+    );
     const { isLoggedIn } = useSelector((state: StoreState) => state.authSlice);
     const { messageCount } = useSelector(
       (state: StoreState) => state.chatSlice
@@ -78,7 +82,6 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
     }, [dispatch]);
 
     const fetchData = useCallback(async () => {
-      dispatch(setIsLoading(true));
       try {
         if (profile.data) dispatch(setUser(profile.data.data));
         if (posts.data) dispatch(setPostList(posts.data.data));
@@ -91,8 +94,6 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Error in fetching data");
-      } finally {
-        dispatch(setIsLoading(false));
       }
     }, [
       dispatch,
@@ -160,6 +161,7 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
 
     useEffect(() => {
       if (isLoggedIn) {
+        dispatch(setIsLoading(true));
         refetchData();
         fetchData();
         connectSocket();
@@ -171,6 +173,10 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
         socket?.on(REFETCH_POSTS, handleRefetchPosts);
         socket?.on(REFETCH_STORIES, handleRefetchStories);
         socket?.on(ONLINE_USERS, setUserOnline);
+
+        setTimeout(() => {
+          dispatch(setIsLoading(false));
+        }, 2000);
 
         return () => {
           socket?.off(NEW_MESSAGE, handleMessage);
@@ -184,7 +190,9 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
       }
     }, [isLoggedIn, fetchData, handleNewRequest, handleAlert, socket]);
 
-    return (
+    return loader ? (
+      <TitleScreen />
+    ) : (
       <div>
         <WrappedComponent {...props} />
         <Toaster />

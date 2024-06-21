@@ -10,7 +10,6 @@ import { useSocket } from "../../socket";
 import { resetMessageCount } from "../../store/reducers/chatSlice";
 import { Message } from "../../interfaces/common";
 import DesktopSidebar from "../shared/DesktopSidebar";
-import Loader from "../shared/Loader";
 import {
   CHAT_JOINED,
   CHAT_LEAVED,
@@ -37,11 +36,9 @@ const ChatWindow = () => {
   const user = useSelector((state: StoreState) => state.userSlice.user);
   const otherUserId = getOtherUser(user?._id, chat?.members);
   const { data: userData } = useGetUserQuery(otherUserId);
-  const {
-    isLoading,
-    data: messageData,
-    refetch: refetchMessages,
-  } = useGetMessagesQuery(id?.toString());
+  const { data: messageData, refetch: refetchMessages } = useGetMessagesQuery(
+    id?.toString()
+  );
 
   useEffect(() => {
     dispatch(resetMessageCount({ chatId: id || "" }));
@@ -96,9 +93,7 @@ const ChatWindow = () => {
       sendMessage();
     }
   };
-  return isLoading ? (
-    <Loader />
-  ) : (
+  return (
     <>
       <DesktopSidebar />
       <div className="lg:w-[600px] lg:m-auto lg:py-4">
