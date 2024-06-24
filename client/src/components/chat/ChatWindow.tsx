@@ -101,9 +101,10 @@ const ChatWindow = () => {
           <UserHeader otherUser={userData?.data} chatId={chat?._id} />
           <div className="flex-grow overflow-auto my-4 flex flex-col-reverse">
             <div ref={messagesEndRef} />
-            {[...messageData?.data].reverse().map((msg: Message) => {
-              return <ChatBubble key={msg?._id} {...msg} />;
-            })}
+            {messageData &&
+              [...messageData?.data].reverse().map((msg: Message) => {
+                return <ChatBubble key={msg?._id} {...msg} />;
+              })}
           </div>
           <div className="flex">
             <input

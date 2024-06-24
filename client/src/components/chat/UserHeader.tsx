@@ -65,8 +65,8 @@ function UserHeader({ chatId, otherUser }: UserHeaderProps) {
   };
 
   return (
-    <div className="p-2 flex justify-between items-center border-b">
-      <div className="flex justify-center items-center space-x-3 lg:space-x-0">
+    <div className="py-1 flex justify-between items-center border-b left-0 fixed z-30 w-full bg-white">
+      <div className="flex justify-center items-center space-x-3 lg:space-x-0 pl-4">
         <Link to={"/chats"} className="lg:hidden">
           <FaArrowLeft />
         </Link>
@@ -94,7 +94,7 @@ function UserHeader({ chatId, otherUser }: UserHeaderProps) {
         </div>
       </div>
       <div>
-        <div className="flex space-x-3">
+        <div className="flex space-x-3 pr-4">
           <LuSearch />
           <Dropdown>
             <DropdownTrigger>
