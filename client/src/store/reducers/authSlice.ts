@@ -5,7 +5,9 @@ interface State {
 }
 
 const initialState: State = {
-  isLoggedIn: localStorage.getItem("token") != null,
+  isLoggedIn:
+    localStorage.getItem("token") != null ||
+    sessionStorage.getItem("token") != null,
 };
 
 const authSlice = createSlice({

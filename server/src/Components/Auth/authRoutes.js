@@ -21,4 +21,8 @@ router.get("/authenticate", (req, res) => {
     authController.isAuthorized(req, res);
 });
 
+router.get("/guests", (req, res) => {
+    authController.getGuests(req, res)
+})
+
 export default router

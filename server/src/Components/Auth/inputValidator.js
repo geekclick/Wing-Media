@@ -39,7 +39,9 @@ const registerSchema = z.object({
         .string({ required_error: "Password is required" })
         .trim()
         .min(7, { message: "Password must be at least 7 chars" })
-        .max(255, { message: "Password must be at most 255 chars" })
+        .max(255, { message: "Password must be at most 255 chars" }),
+
+    isGuest: z.boolean().optional(),
 });
 
 export { registerSchema, loginSchema }

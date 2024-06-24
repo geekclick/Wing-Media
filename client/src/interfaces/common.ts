@@ -7,6 +7,7 @@ export interface ChildProps {
 }
 
 export interface User {
+  created_at: string | number | Date;
   avatar?: {
     public_id: string;
     url: string;

@@ -21,9 +21,10 @@ import { setIsLoggedIn } from "../../store/reducers/authSlice";
 import { StoreState } from "../../interfaces/storeInterface";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { SERVER_URL } from "../../constants";
+import { SERVER_URL, TEST_USER } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { useInitializeSocket } from "../../socket";
+import GuestAlert from "./GuestAlert";
 
 export default function UserAuth() {
   const navigate = useNavigate();
@@ -83,6 +84,43 @@ export default function UserAuth() {
         navigate("/");
         connectSocket();
         reset();
+      }
+    } catch (error: any) {
+      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
+    } finally {
+      setLoader(false);
+    }
+  };
+
+  const handleGuestUser = async () => {
+    try {
+      if (!sessionStorage.getItem("token")) {
+        const response = await axios.post(
+          `${SERVER_URL}/api/auth/register`,
+          TEST_USER
+        );
+        if (response) {
+          sessionStorage.setItem("token", response.data.data.token);
+          dispatch(setIsLoggedIn(true));
+          toast.success("Register Successful!");
+          navigate("/");
+          connectSocket();
+          reset();
+        }
+      } else {
+        const response = await axios.post(`${SERVER_URL}/api/auth/login`, {
+          email: TEST_USER.email,
+          password: TEST_USER.password,
+        });
+        if (response) {
+          sessionStorage.setItem("token", response.data.data.token);
+          dispatch(setIsLoggedIn(true));
+          navigate("/");
+          connectSocket();
+          toast.success("Login Successful!");
+          reset();
+        }
       }
     } catch (error: any) {
       console.log(error.response.data.message);
@@ -163,7 +201,7 @@ export default function UserAuth() {
                               Sign up
                             </Link>
                           </p>
-                          <div className="flex gap-2 justify-end">
+                          <div className="flex flex-col gap-2 justify-end">
                             <Button
                               fullWidth
                               color="primary"
@@ -173,6 +211,11 @@ export default function UserAuth() {
                             >
                               {loader ? <Spinner color="default" /> : "Login"}
                             </Button>
+                            <GuestAlert handleGuestUser={handleGuestUser}>
+                              <div className="w-full text-sm text-center p-2 bg-gray-300 rounded-lg">
+                                View as Guest
+                              </div>
+                            </GuestAlert>
                           </div>
                         </form>
                       </Tab>
@@ -237,7 +280,7 @@ export default function UserAuth() {
                               Login
                             </Link>
                           </p>
-                          <div className="flex gap-2 justify-end">
+                          <div className="flex flex-col gap-2 justify-end">
                             <Button
                               fullWidth
                               color="primary"
@@ -247,6 +290,11 @@ export default function UserAuth() {
                             >
                               {loader ? <Spinner color="default" /> : "Sign up"}
                             </Button>
+                            <GuestAlert handleGuestUser={handleGuestUser}>
+                              <div className="w-full text-sm text-center p-2 bg-gray-300 rounded-lg">
+                                View as Guest
+                              </div>
+                            </GuestAlert>
                           </div>
                         </form>
                       </Tab>

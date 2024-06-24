@@ -18,7 +18,7 @@ class PostController {
             }
             image = { publicId: image.public_id, url: image.secure_url }
         }
-
+        const _id = req.user;
         const postData = { _id, ...req.body, image };
         const post = await postServices.addPost({ ...postData });
         if (!post) {

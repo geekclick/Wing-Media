@@ -30,6 +30,7 @@ function UserProfile({ user, posts, isLoading }: UserProfileProps) {
       });
       if (response) {
         localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
         dispatch(setIsLoggedIn(false));
         toast.success("Log out Successful!");
         navigate("/");

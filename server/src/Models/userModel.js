@@ -31,7 +31,8 @@ const userModel = new mongoose.Schema({
     following: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-    },]
+    },],
+    isGuest: { type: Boolean, default: false },
 });
 
 // Pre-save hook to hash password and update timestamps

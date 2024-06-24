@@ -99,14 +99,14 @@ const ChatWindow = () => {
       <div className="lg:w-[600px] lg:m-auto lg:py-4">
         <div className="flex flex-col lg:h-[95vh] h-screen p-4">
           <UserHeader otherUser={userData?.data} chatId={chat?._id} />
-          <div className="flex-grow overflow-auto my-4 flex flex-col-reverse">
+          <div className="flex-grow overflow-auto my-4 flex flex-col-reverse py-10">
             <div ref={messagesEndRef} />
             {messageData &&
               [...messageData?.data].reverse().map((msg: Message) => {
                 return <ChatBubble key={msg?._id} {...msg} />;
               })}
           </div>
-          <div className="flex">
+          <div className="flex fixed w-full bottom-0 left-0 p-2">
             <input
               type="text"
               value={message}

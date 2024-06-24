@@ -12,8 +12,11 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${SERVER_URL}/api`,
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
+      let token = localStorage.getItem("token");
       if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      } else {
+        token = sessionStorage.getItem("token");
         headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;

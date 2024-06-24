@@ -8,6 +8,7 @@ const TEST_USER = {
   name: "Test User",
   email: `testuser@${uuid().toString().slice(0, 4)}.com`,
   password: `testpassword${uuid().toString().slice(0, 4)}`,
+  isGuest: true,
 };
 
 export { SERVER_URL, POST_URL, TEST_USER };

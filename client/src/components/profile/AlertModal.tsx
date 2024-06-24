@@ -32,6 +32,7 @@ function AlertModal({ children }: ChildProps) {
         if (response) {
           dispatch(setIsLoggedIn(false));
           localStorage.removeItem("token");
+          sessionStorage.removeItem("token");
           navigate("/");
         }
       }

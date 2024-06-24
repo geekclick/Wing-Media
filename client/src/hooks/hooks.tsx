@@ -77,7 +77,6 @@ const useDoubleTap = (onDoubleTap: () => void) => {
     }
     setLastTap(now);
   };
-
   return handleDoubleTap;
 };
 

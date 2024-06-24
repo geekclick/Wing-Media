@@ -43,10 +43,12 @@ import {
 } from "../constants/events";
 import { SERVER_URL } from "../constants";
 import TitleScreen from "../components/shared/TitleScreen";
+import useHandleGuest from "../hooks/useHandleGuest";
 
 function AppLayout(WrappedComponent: JSX.ElementType) {
   return function NewAppComponent(props: JSX.IntrinsicAttributes) {
     const dispatch = useDispatch();
+    useHandleGuest();
     const { isLoggedIn } = useSelector((state: StoreState) => state.authSlice);
     const { messageCount } = useSelector(
       (state: StoreState) => state.chatSlice
