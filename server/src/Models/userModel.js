@@ -22,7 +22,6 @@ const userModel = new mongoose.Schema({
             ref: "Post",
         },
     ],
-    profile_picture: String,
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     followers: [{
@@ -81,6 +80,8 @@ userModel.methods.toAuthJSON = function () {
 userModel.methods.toJSON = function () {
     return {
         _id: this._id,
+        name: this.name,
+        username: this.username,
         email: this.email,
         bio: this.bio,
         posts: this.posts,

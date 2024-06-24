@@ -1,13 +1,5 @@
 import userSocketIDs from "../../server.js";
 
-export const createValidationResponse = (res, errors) => {
-    return res.status(400).json({
-        status: 400,
-        message: errors[Object.keys(errors)?.[0]],
-        errors: { ...errors },
-    });
-};
-
 export const createResponse = (res, status, message, data, statusCode) => {
     return res.status(status).json({ status: statusCode, message, data });
 };

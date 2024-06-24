@@ -2,9 +2,9 @@ import User from "../../Models/userModel.js";
 
 class UserServices {
     async getProfile(id) {
-        const user = await User.findById(id).select({ password: 0, isAdmin: 0, __v: 0 })
+        const user = await User.findById(id);
         if (user) {
-            return user
+            return user.toJSON();
         } else return null
     }
 }

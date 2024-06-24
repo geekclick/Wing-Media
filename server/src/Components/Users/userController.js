@@ -14,7 +14,7 @@ class UserController {
     profile = TryCatch(async (req, res, next) => {
         const user = await userServices.getProfile(req.user)
         if (user) {
-            return createResponse(res, 200, "Profile fetched!", user._doc, 200)
+            return createResponse(res, 200, "Profile fetched!", user, 200)
         } else {
             return createError(res, 404, "Profile not found")
         }
@@ -23,9 +23,9 @@ class UserController {
     getUser = TryCatch(async (req, res, next) => {
         const userId = req.params.id
         if (userId) {
-            const user = await User.findById(userId).select({ password: 0, isAdmin: 0, __v: 0 })
+            const user = await User.findById(userId)
             if (user)
-                return createResponse(res, 200, "User found!", user._doc, 200)
+                return createResponse(res, 200, "User found!", user.toJSON(), 200);
             else
                 return createError(res, 404, "User not found")
         }
@@ -68,9 +68,9 @@ class UserController {
                 { name: new RegExp(query, 'i') },
                 { username: new RegExp(query, 'i') }
             ]
-        }).select({ password: 0, __v: 0 });
+        })
         if (users) {
-            const formattedUsers = users.map((user) => user._doc);
+            const formattedUsers = users.map((user) => user.toJSON());
             return createResponse(res, 200, `Users found for ${query}`, formattedUsers, 200)
         } else
             return createError(res, 404, "User not found!")
