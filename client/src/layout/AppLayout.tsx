@@ -47,9 +47,6 @@ import TitleScreen from "../components/shared/TitleScreen";
 function AppLayout(WrappedComponent: JSX.ElementType) {
   return function NewAppComponent(props: JSX.IntrinsicAttributes) {
     const dispatch = useDispatch();
-    const loader = useSelector(
-      (state: StoreState) => state.commonSlice.isLoading
-    );
     const { isLoggedIn } = useSelector((state: StoreState) => state.authSlice);
     const { messageCount } = useSelector(
       (state: StoreState) => state.chatSlice
@@ -161,11 +158,9 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
 
     useEffect(() => {
       if (isLoggedIn) {
-        dispatch(setIsLoading(true));
         refetchData();
         fetchData();
         connectSocket();
-
         socket?.on(NEW_REQUEST, handleNewRequest);
         socket?.on(ALERT, handleAlert);
         socket?.on(NEW_MESSAGE, handleMessage);
@@ -174,9 +169,15 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
         socket?.on(REFETCH_STORIES, handleRefetchStories);
         socket?.on(ONLINE_USERS, setUserOnline);
 
-        setTimeout(() => {
-          dispatch(setIsLoading(false));
-        }, 2000);
+        dispatch(
+          setIsLoading(
+            profile.isLoading ||
+              posts.isLoading ||
+              notifications.isLoading ||
+              stories.isLoading ||
+              chats.isLoading
+          )
+        );
 
         return () => {
           socket?.off(NEW_MESSAGE, handleMessage);
@@ -190,10 +191,9 @@ function AppLayout(WrappedComponent: JSX.ElementType) {
       }
     }, [isLoggedIn, fetchData, handleNewRequest, handleAlert, socket]);
 
-    return loader ? (
-      <TitleScreen />
-    ) : (
+    return (
       <div>
+        {isLoggedIn && <TitleScreen />}
         <WrappedComponent {...props} />
         <Toaster />
       </div>

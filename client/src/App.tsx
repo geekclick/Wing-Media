@@ -23,7 +23,6 @@ import NewStoryPage from "./pages/NewStoryPage";
 
 function App() {
   const { isLoading } = useSelector((state: StoreState) => state.commonSlice);
-
   return (
     <>
       <BrowserRouter basename="/">
