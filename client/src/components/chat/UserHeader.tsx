@@ -65,7 +65,7 @@ function UserHeader({ chatId, otherUser }: UserHeaderProps) {
   };
 
   return (
-    <div className="py-1 flex justify-between items-center border-b left-0 fixed z-30 w-full bg-white">
+    <div className="py-2 flex justify-between items-center border-b left-0 top-0 fixed z-30 w-full bg-white">
       <div className="flex justify-center items-center space-x-3 lg:space-x-0 pl-4">
         <Link to={"/chats"} className="lg:hidden">
           <FaArrowLeft />
