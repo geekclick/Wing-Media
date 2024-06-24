@@ -20,7 +20,7 @@ export interface User {
   posts?: Post[];
   followers?: string[];
   following?: string[];
-  created_at?: string | number | Date;
+  created_at?: string;
 }
 
 export interface Comment {

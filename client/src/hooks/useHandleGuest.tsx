@@ -17,12 +17,14 @@ const useHandleGuest = () => {
       const currentDate: Date = new Date();
 
       guests.forEach((guest: User) => {
-        const createdAt: Date = new Date(guest.created_at);
-        const timeDifference: number =
-          currentDate.getTime() - createdAt.getTime();
-        const hoursDifference: number = timeDifference / (1000 * 60 * 1);
-        if (hoursDifference > 2) {
-          guest._id && deleteGuest(guest._id);
+        if (guest.created_at) {
+          const createdAt: Date = new Date(guest.created_at);
+          const timeDifference: number =
+            currentDate.getTime() - createdAt.getTime();
+          const hoursDifference: number = timeDifference / (1000 * 60 * 1);
+          if (hoursDifference > 2) {
+            guest._id && deleteGuest(guest._id);
+          }
         }
       });
     } catch (error) {
