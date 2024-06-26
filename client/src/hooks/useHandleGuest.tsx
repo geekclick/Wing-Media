@@ -21,8 +21,8 @@ const useHandleGuest = () => {
           const createdAt: Date = new Date(guest.created_at);
           const timeDifference: number =
             currentDate.getTime() - createdAt.getTime();
-          const hoursDifference: number = timeDifference / (1000 * 60 * 1);
-          if (hoursDifference > 2) {
+          const hoursDifference: number = timeDifference / (1000 * 60 * 60);
+          if (hoursDifference > 1) {
             guest._id && deleteGuest(guest._id);
           }
         }
