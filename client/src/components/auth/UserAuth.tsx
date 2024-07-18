@@ -94,6 +94,7 @@ export default function UserAuth() {
   };
 
   const handleGuestUser = async () => {
+    setLoader(true);
     try {
       if (!sessionStorage.getItem("token")) {
         const response = await axios.post(
@@ -213,7 +214,7 @@ export default function UserAuth() {
                             </Button>
                             <GuestAlert handleGuestUser={handleGuestUser}>
                               <div className="w-full text-sm text-center p-2 bg-gray-300 rounded-lg">
-                                View as Guest
+                                {loader ? "Please Wait" : "View as Guest"}
                               </div>
                             </GuestAlert>
                           </div>
@@ -292,7 +293,7 @@ export default function UserAuth() {
                             </Button>
                             <GuestAlert handleGuestUser={handleGuestUser}>
                               <div className="w-full text-sm text-center p-2 bg-gray-300 rounded-lg">
-                                View as Guest
+                                {loader ? "Please Wait" : "View as Guest"}
                               </div>
                             </GuestAlert>
                           </div>
