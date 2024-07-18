@@ -213,7 +213,7 @@ export default function UserAuth() {
                               {loader ? <Spinner color="default" /> : "Login"}
                             </Button>
                             <GuestAlert handleGuestUser={handleGuestUser}>
-                              <div className="w-full text-sm text-center p-2 bg-gray-300 rounded-lg">
+                              <div className="w-full text-sm text-center p-2 bg-gray-300 rounded-lg cursor-pointer">
                                 {loader ? "Please Wait" : "View as Guest"}
                               </div>
                             </GuestAlert>
@@ -292,7 +292,7 @@ export default function UserAuth() {
                               {loader ? <Spinner color="default" /> : "Sign up"}
                             </Button>
                             <GuestAlert handleGuestUser={handleGuestUser}>
-                              <div className="w-full text-sm text-center p-2 bg-gray-300 rounded-lg">
+                              <div className="w-full text-sm text-center p-2 bg-gray-300 rounded-lg cursor-pointer">
                                 {loader ? "Please Wait" : "View as Guest"}
                               </div>
                             </GuestAlert>
